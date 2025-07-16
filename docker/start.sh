@@ -13,11 +13,11 @@ APP_DEBUG=${APP_DEBUG:-false}
 APP_URL=${APP_URL}
 
 DB_CONNECTION=${DB_CONNECTION:-pgsql}
-DB_HOST=${DB_HOST}
-DB_PORT=${DB_PORT:-5432}
-DB_DATABASE=${DB_DATABASE}
-DB_USERNAME=${DB_USERNAME}
-DB_PASSWORD=${DB_PASSWORD}
+DB_HOST=${DB_HOST:-${PGHOST:-postgres.railway.internal}}
+DB_PORT=${DB_PORT:-${PGPORT:-5432}}
+DB_DATABASE=${DB_DATABASE:-${PGDATABASE:-railway}}
+DB_USERNAME=${DB_USERNAME:-${PGUSER:-postgres}}
+DB_PASSWORD=${DB_PASSWORD:-${PGPASSWORD}}
 
 SESSION_DRIVER=${SESSION_DRIVER:-database}
 CACHE_STORE=${CACHE_STORE:-database}
@@ -34,12 +34,21 @@ EOF
 echo "=== ENVIRONMENT CHECK ==="
 echo "APP_ENV: $APP_ENV"
 echo "DB_CONNECTION: $DB_CONNECTION"
-echo "DB_HOST: $DB_HOST"
-echo "DB_PORT: $DB_PORT"
-echo "DB_DATABASE: $DB_DATABASE"
-echo "DB_USERNAME: $DB_USERNAME"
-echo "DB_PASSWORD: [HIDDEN]"
-echo "APP_URL: $APP_URL"
+echo "DB_HOST: '$DB_HOST'"
+echo "DB_PORT: '$DB_PORT'"
+echo "DB_DATABASE: '$DB_DATABASE'"
+echo "DB_USERNAME: '$DB_USERNAME'"
+echo "DB_PASSWORD: '$(echo $DB_PASSWORD | cut -c1-3)***'"
+echo "APP_URL: '$APP_URL'"
+
+# Vérifier si les variables essentielles sont définies
+if [ -z "$DB_HOST" ]; then
+    echo "❌ CRITICAL: DB_HOST is not set!"
+    echo "Available environment variables containing 'PG':"
+    env | grep -i pg || echo "No PG variables found"
+    echo "Available environment variables containing 'DB':"
+    env | grep -i db || echo "No DB variables found"
+fi
 
 # Tester la connexion à la base de données
 echo "=== DATABASE CONNECTION TEST ==="
@@ -63,14 +72,17 @@ fi
 echo "Waiting for database connection..."
 sleep 15
 
-# Nettoyer le cache avant les migrations
-echo "=== CLEARING CACHE ==="
+# Nettoyer seulement la config avant les migrations
+echo "=== CLEARING CONFIG CACHE ==="
 php artisan config:clear
-php artisan cache:clear
 
 # Exécuter les migrations avec fresh pour éviter les conflits
 echo "=== RUNNING FRESH MIGRATIONS ==="
 php artisan migrate:fresh --force
+
+# Nettoyer le cache après que les tables existent
+echo "=== CLEARING APPLICATION CACHE ==="
+php artisan cache:clear
 
 # Ajouter des données de test
 echo "=== SEEDING DATABASE ==="
