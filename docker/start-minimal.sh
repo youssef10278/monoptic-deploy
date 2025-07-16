@@ -17,12 +17,12 @@ APP_NAME=Monoptic
 APP_ENV=${APP_ENV}
 APP_DEBUG=${APP_DEBUG}
 APP_KEY=${APP_KEY}
-APP_URL=${APP_URL}
+APP_URL=https://${APP_URL}
 
 # Forcer HTTPS pour Railway
-ASSET_URL=${APP_URL}
-MIX_ASSET_URL=${APP_URL}
-VITE_APP_URL=${APP_URL}
+ASSET_URL=https://${APP_URL}
+MIX_ASSET_URL=https://${APP_URL}
+VITE_APP_URL=https://${APP_URL}
 
 DB_CONNECTION=pgsql
 DB_HOST=${DB_HOST}
@@ -36,6 +36,14 @@ SESSION_DRIVER=file
 QUEUE_CONNECTION=sync
 LOG_CHANNEL=stderr
 EOF
+
+echo ""
+echo "=== 🔍 VÉRIFICATION CONFIGURATION URLS ==="
+echo "📋 APP_URL configurée: https://${APP_URL}"
+echo "📋 ASSET_URL configurée: https://${APP_URL}"
+echo "📋 Variables d'environnement Railway:"
+echo "   - APP_URL (Railway): ${APP_URL}"
+echo "   - PORT: ${PORT}"
 
 # Générer clé si nécessaire
 if [ -z "$APP_KEY" ]; then
