@@ -90,12 +90,7 @@ Route::get('/build/assets/{file}', function ($file) {
     ]);
 })->where('file', '.*');
 
-// Routes pour l'application SPA
+// Route pour servir l'application SPA Vue.js (exclut /build)
 Route::get('/{any}', function () {
     return view('app');
 })->where('any', '^(?!build).*');
-
-// Route pour servir l'application SPA Vue.js
-Route::get('/{any}', function () {
-    return view('app');
-})->where('any', '.*');
