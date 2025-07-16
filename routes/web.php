@@ -71,10 +71,9 @@ Route::get('/test-db', function () {
     }
 });
 
-// Route principale
+// Route principale - SIMPLE
 Route::get('/', function () {
-    return response('Monoptic Application - Port: ' . env('PORT', 80) . ' - Laravel ' . app()->version(), 200)
-        ->header('Content-Type', 'text/plain');
+    return 'Monoptic Application - Laravel ' . app()->version() . ' - Port: ' . env('PORT', 80);
 });
 
 // Route pour servir l'application SPA Vue.js
