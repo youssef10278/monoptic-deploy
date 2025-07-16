@@ -21,60 +21,55 @@ Route::get('/api/health', function () {
     ]);
 });
 
-// Route de diagnostic pour déboguer les problèmes 502
-Route::get('/debug', function () {
-    try {
-        return response()->json([
-            'status' => 'ok',
-            'laravel_version' => app()->version(),
-            'php_version' => PHP_VERSION,
-            'document_root' => $_SERVER['DOCUMENT_ROOT'] ?? 'undefined',
-            'script_name' => $_SERVER['SCRIPT_NAME'] ?? 'undefined',
-            'request_uri' => $_SERVER['REQUEST_URI'] ?? 'undefined',
-            'server_port' => $_SERVER['SERVER_PORT'] ?? 'undefined',
-            'app_env' => env('APP_ENV'),
-            'app_debug' => env('APP_DEBUG'),
-            'app_url' => env('APP_URL'),
-            'cache_config' => config('cache.default'),
-            'session_driver' => config('session.driver'),
-            'database_connection' => config('database.default'),
-            'routes_cached' => app()->routesAreCached(),
-            'config_cached' => app()->configurationIsCached(),
-            'timestamp' => now()->toISOString(),
-        ]);
-    } catch (Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-        ], 500);
-    }
-});
+// Routes de debug - SEULEMENT en développement
+if (env('APP_ENV') !== 'production') {
+    Route::get('/debug', function () {
+        try {
+            return response()->json([
+                'status' => 'ok',
+                'laravel_version' => app()->version(),
+                'php_version' => PHP_VERSION,
+                'app_env' => env('APP_ENV'),
+                'routes_cached' => app()->routesAreCached(),
+                'config_cached' => app()->configurationIsCached(),
+                'timestamp' => now()->toISOString(),
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    });
 
-// Route de test de base de données
-Route::get('/test-db', function () {
-    try {
-        DB::connection()->getPdo();
-        $tables = DB::select("SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
-        return response()->json([
-            'database' => 'connected',
-            'connection' => config('database.default'),
-            'tables_count' => count($tables),
-            'timestamp' => now()
-        ]);
-    } catch (Exception $e) {
-        return response()->json([
-            'database' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
-    }
-});
+    Route::get('/test-db', function () {
+        try {
+            DB::connection()->getPdo();
+            $tables = DB::select("SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
+            return response()->json([
+                'database' => 'connected',
+                'connection' => config('database.default'),
+                'tables_count' => count($tables),
+                'timestamp' => now()
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'database' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    });
+}
 
-// Route principale - SIMPLE
+// Route principale - Interface Monoptic
 Route::get('/', function () {
-    return 'Monoptic Application - Laravel ' . app()->version() . ' - Port: ' . env('PORT', 80);
+    return view('app');
 });
+
+// Routes pour l'application SPA
+Route::get('/{any}', function () {
+    return view('app');
+})->where('any', '.*');
 
 // Route pour servir l'application SPA Vue.js
 Route::get('/{any}', function () {

@@ -48,6 +48,10 @@ ln -sf /var/www/html /workspace
 envsubst '${PORT}' < /etc/apache2/sites-available/000-default.conf > /tmp/apache-config
 cp /tmp/apache-config /etc/apache2/sites-available/000-default.conf
 
+# Compiler les assets Vue.js
+echo "=== BUILDING FRONTEND ==="
+npm run build
+
 # Migrations
 echo "=== MIGRATIONS ==="
 php artisan migrate --force

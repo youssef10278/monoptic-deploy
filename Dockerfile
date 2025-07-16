@@ -1,7 +1,9 @@
 FROM php:8.2-apache
 
-# Installer les dépendances essentielles
-RUN apt-get update && apt-get install -y \
+# Installer Node.js et les dépendances essentielles
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get update && apt-get install -y \
+    nodejs \
     libpq-dev \
     zip \
     unzip \
@@ -23,6 +25,9 @@ COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
 # Copier l'application
 WORKDIR /var/www/html
 COPY . .
+
+# Installer les dépendances NPM
+RUN npm install
 
 # Installer les dépendances avec autoloader optimisé
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
