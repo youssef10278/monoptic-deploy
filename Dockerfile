@@ -28,9 +28,10 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Script de démarrage
-RUN chmod +x docker/start-simple.sh
+# Script de démarrage - Copier au bon endroit pour Railway
+RUN cp docker/start-simple.sh /usr/local/bin/start.sh \
+    && chmod +x /usr/local/bin/start.sh
 
 EXPOSE 80
 
-CMD ["/var/www/html/docker/start-simple.sh"]
+CMD ["/usr/local/bin/start.sh"]
