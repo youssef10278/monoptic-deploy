@@ -49,16 +49,7 @@ php artisan migrate:fresh --force || {
 echo "OK" > public/health
 
 echo "=== STARTING SERVER ==="
-echo "Waiting 5 seconds for Apache to fully start..."
 
-# Démarrer Apache en arrière-plan
-apache2ctl start
-
-# Attendre qu'Apache soit prêt
-sleep 5
-
-# Vérifier qu'Apache fonctionne
-curl -f http://localhost/health || echo "Health check failed"
-
-# Garder le container en vie
+# Démarrer Apache directement en foreground
+# Railway fera son propre healthcheck
 apache2-foreground
