@@ -56,6 +56,7 @@ cp /tmp/apache-config /etc/apache2/sites-available/000-default.conf
 # Nettoyer et compiler les assets Vue.js avec HTTPS
 echo "=== BUILDING FRONTEND WITH HTTPS ==="
 rm -rf public/build
+npm install
 npm run build
 
 # Vérifier que les assets sont générés
