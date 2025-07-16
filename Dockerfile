@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
+    gettext-base \
     && docker-php-ext-install pdo pdo_pgsql \
     && rm -rf /var/lib/apt/lists/*
 
@@ -30,9 +31,10 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Script de démarrage - Copier au bon endroit pour Railway
-RUN cp docker/start-simple.sh /usr/local/bin/start.sh \
+RUN cp docker/start.sh /usr/local/bin/start.sh \
     && chmod +x /usr/local/bin/start.sh
 
-EXPOSE 80
+# Railway utilise la variable PORT dynamiquement
+EXPOSE $PORT
 
 CMD ["/usr/local/bin/start.sh"]

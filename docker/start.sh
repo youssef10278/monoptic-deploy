@@ -1,126 +1,80 @@
 #!/bin/bash
 set -e
 
-echo "=== MONOPTIC DEPLOYMENT START ==="
+echo "=== MONOPTIC RAILWAY DEPLOYMENT ==="
 
-# Créer le fichier .env avec les variables d'environnement
-echo "Creating .env file from environment variables..."
+# Configuration Railway
+export PORT=${PORT:-80}
+export APP_ENV=${APP_ENV:-production}
+export APP_DEBUG=${APP_DEBUG:-false}
+export DB_CONNECTION=${DB_CONNECTION:-pgsql}
+
+echo "Railway Port: $PORT"
+echo "Database: ${DB_HOST}:${DB_PORT}/${DB_DATABASE}"
+
+# Créer .env pour Laravel
 cat > .env << EOF
-APP_NAME=${APP_NAME:-Monoptic}
-APP_ENV=${APP_ENV:-production}
+APP_NAME=Monoptic
+APP_ENV=${APP_ENV}
+APP_DEBUG=${APP_DEBUG}
 APP_KEY=${APP_KEY}
-APP_DEBUG=${APP_DEBUG:-false}
 APP_URL=${APP_URL}
 
-DB_CONNECTION=${DB_CONNECTION:-pgsql}
-DB_HOST=${DB_HOST:-${PGHOST:-postgres.railway.internal}}
-DB_PORT=${DB_PORT:-${PGPORT:-5432}}
-DB_DATABASE=${DB_DATABASE:-${PGDATABASE:-railway}}
-DB_USERNAME=${DB_USERNAME:-${PGUSER:-postgres}}
-DB_PASSWORD=${DB_PASSWORD:-${PGPASSWORD}}
+DB_CONNECTION=${DB_CONNECTION}
+DB_HOST=${DB_HOST}
+DB_PORT=${DB_PORT}
+DB_DATABASE=${DB_DATABASE}
+DB_USERNAME=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
 
-SESSION_DRIVER=${SESSION_DRIVER:-database}
-CACHE_STORE=${CACHE_STORE:-database}
-QUEUE_CONNECTION=${QUEUE_CONNECTION:-database}
-LOG_CHANNEL=${LOG_CHANNEL:-stack}
-LOG_LEVEL=${LOG_LEVEL:-error}
-
-MAIL_MAILER=${MAIL_MAILER:-log}
-MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS:-noreply@monoptic.com}
-MAIL_FROM_NAME=${MAIL_FROM_NAME:-Monoptic}
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+QUEUE_CONNECTION=sync
+LOG_CHANNEL=stderr
 EOF
 
-# Vérifier les variables critiques
-echo "=== ENVIRONMENT CHECK ==="
-echo "APP_ENV: $APP_ENV"
-echo "DB_CONNECTION: $DB_CONNECTION"
-echo "DB_HOST: '$DB_HOST'"
-echo "DB_PORT: '$DB_PORT'"
-echo "DB_DATABASE: '$DB_DATABASE'"
-echo "DB_USERNAME: '$DB_USERNAME'"
-echo "DB_PASSWORD: '$(echo $DB_PASSWORD | cut -c1-3)***'"
-echo "APP_URL: '$APP_URL'"
-
-# Vérifier si les variables essentielles sont définies
-if [ -z "$DB_HOST" ]; then
-    echo "❌ CRITICAL: DB_HOST is not set!"
-    echo "Available environment variables containing 'PG':"
-    env | grep -i pg || echo "No PG variables found"
-    echo "Available environment variables containing 'DB':"
-    env | grep -i db || echo "No DB variables found"
-fi
-
-# Tester la connexion à la base de données
-echo "=== DATABASE CONNECTION TEST ==="
-if [ -n "$DB_HOST" ] && [ -n "$DB_PORT" ]; then
-    echo "Testing connection to $DB_HOST:$DB_PORT..."
-    nc -z "$DB_HOST" "$DB_PORT" && echo "✅ Database port is reachable" || echo "❌ Cannot reach database port"
-else
-    echo "❌ DB_HOST or DB_PORT is empty"
-fi
-
-# Générer la clé d'application si elle n'existe pas
+# Générer clé d'application si nécessaire
 if [ -z "$APP_KEY" ]; then
     echo "Generating application key..."
     php artisan key:generate --force
-    # Relire la clé générée
-    APP_KEY=$(grep APP_KEY .env | cut -d '=' -f2)
-    echo "Generated APP_KEY: $APP_KEY"
 fi
 
-# Attendre que la base de données soit prête
-echo "Waiting for database connection..."
-sleep 15
+# Configurer Apache pour le port Railway
+echo "=== CONFIGURING APACHE FOR PORT $PORT ==="
 
-# Nettoyer seulement la config avant les migrations
-echo "=== CLEARING CONFIG CACHE ==="
-php artisan config:clear
+# Modifier la configuration des ports Apache
+echo "Listen $PORT" > /etc/apache2/ports.conf
 
-# Forcer un reset complet de la base de données
-echo "=== FORCING COMPLETE DATABASE RESET ==="
+# Substituer la variable PORT dans la configuration du VirtualHost
+envsubst '${PORT}' < /etc/apache2/sites-available/000-default.conf > /tmp/apache-config
+cp /tmp/apache-config /etc/apache2/sites-available/000-default.conf
 
-# Supprimer toutes les tables manuellement
-php -r "
-\$pdo = new PDO('pgsql:host=${DB_HOST};port=${DB_PORT};dbname=${DB_DATABASE}', '${DB_USERNAME}', '${DB_PASSWORD}');
-\$tables = \$pdo->query(\"SELECT tablename FROM pg_tables WHERE schemaname = 'public'\")->fetchAll(PDO::FETCH_COLUMN);
-foreach (\$tables as \$table) {
-    \$pdo->exec(\"DROP TABLE IF EXISTS \\\"{\$table}\\\" CASCADE\");
-    echo \"Dropped table: {\$table}\\n\";
+# Attendre la base de données
+echo "=== WAITING FOR DATABASE ==="
+sleep 10
+
+# Exécuter les migrations
+echo "=== RUNNING MIGRATIONS ==="
+php artisan migrate:fresh --force || {
+    echo "Fresh migration failed, trying regular migrate..."
+    php artisan migrate --force
 }
-echo \"Database completely cleaned\\n\";
-"
 
-# Maintenant exécuter les migrations sur une base propre
-echo "=== RUNNING FRESH MIGRATIONS ==="
-php artisan migrate --force
+# Créer les endpoints de healthcheck
+echo "=== CREATING HEALTHCHECK ENDPOINTS ==="
+echo "OK" > public/health
+mkdir -p public/api
+echo '{"status":"ok","app":"monoptic","port":"'$PORT'"}' > public/api/health
 
-# Nettoyer le cache après que les tables existent
-echo "=== CLEARING APPLICATION CACHE ==="
-php artisan cache:clear
-
-# Ajouter des données de test
-echo "=== SEEDING DATABASE ==="
-php artisan db:seed --class=ProductionSeeder --force
-
-# Optimiser l'application pour la production
-echo "=== OPTIMIZING FOR PRODUCTION ==="
+# Optimiser pour la production
+echo "=== OPTIMIZING APPLICATION ==="
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Vérifier que l'application fonctionne
-echo "=== TESTING APPLICATION ==="
-php artisan route:list | head -5
-
-# Créer un endpoint de healthcheck
-echo "=== CREATING HEALTHCHECK ==="
-cat > public/health << 'EOF'
-OK
-EOF
-
-echo "=== STARTING APACHE ==="
-echo "Application will be available at: $APP_URL"
-echo "Healthcheck available at: $APP_URL/health"
+echo "=== STARTING APACHE ON PORT $PORT ==="
+echo "Application will be available on port $PORT"
+echo "Health endpoints: /health and /api/health"
 
 # Démarrer Apache
-apache2-foreground
+exec apache2-foreground
