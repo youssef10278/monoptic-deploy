@@ -33,4 +33,4 @@ RUN chmod +x docker/start-simple.sh
 
 EXPOSE 80
 
-CMD ["docker/start-simple.sh"]
+CMD ["/var/www/html/docker/start-simple.sh"]
