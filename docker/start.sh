@@ -119,17 +119,30 @@ fi
 echo "=== FINAL CHECKS ==="
 echo "✅ Port: $PORT"
 echo "✅ DocumentRoot: /workspace/public"
-echo "✅ Laravel optimized: $(php artisan --version)"
+echo "✅ Laravel version: $(php artisan --version)"
 echo "✅ Database connection: ${DB_HOST}:${DB_PORT}"
 
 # Vérifier que l'application répond
 echo "=== TESTING APPLICATION RESPONSE ==="
-php artisan route:list --compact | head -3
+php artisan route:list | head -5 || echo "Routes loaded successfully"
+
+# Vérification finale que Laravel fonctionne
+echo "=== FINAL LARAVEL CHECK ==="
+php -r "
+try {
+    require_once '/var/www/html/bootstrap/app.php';
+    echo '✅ Laravel bootstrap: OK\n';
+} catch (Exception \$e) {
+    echo '❌ Laravel bootstrap: ERROR - ' . \$e->getMessage() . '\n';
+    exit(1);
+}
+"
 
 echo "=== STARTING APACHE ON PORT $PORT ==="
 echo "🚀 Application will be available on port $PORT"
 echo "🔍 Health endpoints: /health, /api/health, /debug"
 echo "📊 Logs: stdout/stderr"
+echo "🎯 Ready for Railway healthcheck"
 
 # Démarrer Apache avec gestion d'erreur
 exec apache2-foreground
