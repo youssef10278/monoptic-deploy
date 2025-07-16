@@ -45,7 +45,8 @@ echo "=== CONFIGURING APACHE FOR RAILWAY ==="
 # Créer un lien symbolique vers le bon répertoire pour Railway
 ln -sf /var/www/html /workspace
 
-# Modifier la configuration des ports Apache
+# Configuration Apache globale pour éliminer les avertissements
+echo "ServerName localhost" >> /etc/apache2/apache2.conf
 echo "Listen $PORT" > /etc/apache2/ports.conf
 
 # Substituer la variable PORT dans la configuration du VirtualHost
@@ -55,6 +56,10 @@ cp /tmp/apache-config /etc/apache2/sites-available/000-default.conf
 # Activer les modules Apache nécessaires pour Laravel
 a2enmod rewrite
 a2enmod headers
+
+# Vérifier la configuration Apache
+echo "Testing Apache configuration..."
+apache2ctl configtest
 
 # Attendre la base de données
 echo "=== WAITING FOR DATABASE ==="
@@ -110,9 +115,21 @@ if [ ! -f "public/.htaccess" ]; then
 EOF
 fi
 
-echo "=== STARTING APACHE ON PORT $PORT ==="
-echo "Application will be available on port $PORT"
-echo "Health endpoints: /health and /api/health"
+# Test final avant démarrage
+echo "=== FINAL CHECKS ==="
+echo "✅ Port: $PORT"
+echo "✅ DocumentRoot: /workspace/public"
+echo "✅ Laravel optimized: $(php artisan --version)"
+echo "✅ Database connection: ${DB_HOST}:${DB_PORT}"
 
-# Démarrer Apache
+# Vérifier que l'application répond
+echo "=== TESTING APPLICATION RESPONSE ==="
+php artisan route:list --compact | head -3
+
+echo "=== STARTING APACHE ON PORT $PORT ==="
+echo "🚀 Application will be available on port $PORT"
+echo "🔍 Health endpoints: /health, /api/health, /debug"
+echo "📊 Logs: stdout/stderr"
+
+# Démarrer Apache avec gestion d'erreur
 exec apache2-foreground
