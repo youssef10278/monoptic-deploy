@@ -24,8 +24,8 @@ COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
 WORKDIR /var/www/html
 COPY . .
 
-# Installer les dépendances
-RUN composer install --no-dev --optimize-autoloader
+# Installer les dépendances avec autoloader optimisé
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # Permissions
 RUN chown -R www-data:www-data /var/www/html \
@@ -33,7 +33,7 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Script de démarrage - Copier au bon endroit pour Railway
-RUN cp docker/start.sh /usr/local/bin/start.sh \
+RUN cp docker/start-minimal.sh /usr/local/bin/start.sh \
     && chmod +x /usr/local/bin/start.sh
 
 # Railway utilise la variable PORT dynamiquement
