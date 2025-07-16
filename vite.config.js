@@ -17,6 +17,8 @@ export default defineConfig({
             },
         }),
     ],
+    // Configuration pour Railway HTTPS
+    base: process.env.VITE_APP_URL || '/',
     resolve: {
         alias: {
             vue: 'vue/dist/vue.esm-bundler.js',

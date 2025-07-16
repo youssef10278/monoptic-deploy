@@ -11,13 +11,18 @@ export APP_DEBUG=${APP_DEBUG:-false}
 echo "Port: $PORT"
 echo "Environment: $APP_ENV"
 
-# Créer .env minimal
+# Créer .env minimal avec HTTPS forcé
 cat > .env << EOF
 APP_NAME=Monoptic
 APP_ENV=${APP_ENV}
 APP_DEBUG=${APP_DEBUG}
 APP_KEY=${APP_KEY}
 APP_URL=${APP_URL}
+
+# Forcer HTTPS pour Railway
+ASSET_URL=${APP_URL}
+MIX_ASSET_URL=${APP_URL}
+VITE_APP_URL=${APP_URL}
 
 DB_CONNECTION=pgsql
 DB_HOST=${DB_HOST}
@@ -48,8 +53,9 @@ ln -sf /var/www/html /workspace
 envsubst '${PORT}' < /etc/apache2/sites-available/000-default.conf > /tmp/apache-config
 cp /tmp/apache-config /etc/apache2/sites-available/000-default.conf
 
-# Compiler les assets Vue.js
-echo "=== BUILDING FRONTEND ==="
+# Nettoyer et compiler les assets Vue.js avec HTTPS
+echo "=== BUILDING FRONTEND WITH HTTPS ==="
+rm -rf public/build
 npm run build
 
 # Migrations
