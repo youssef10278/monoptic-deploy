@@ -76,9 +76,23 @@ sleep 15
 echo "=== CLEARING CONFIG CACHE ==="
 php artisan config:clear
 
-# Exécuter les migrations avec fresh pour éviter les conflits
+# Forcer un reset complet de la base de données
+echo "=== FORCING COMPLETE DATABASE RESET ==="
+
+# Supprimer toutes les tables manuellement
+php -r "
+\$pdo = new PDO('pgsql:host=${DB_HOST};port=${DB_PORT};dbname=${DB_DATABASE}', '${DB_USERNAME}', '${DB_PASSWORD}');
+\$tables = \$pdo->query(\"SELECT tablename FROM pg_tables WHERE schemaname = 'public'\")->fetchAll(PDO::FETCH_COLUMN);
+foreach (\$tables as \$table) {
+    \$pdo->exec(\"DROP TABLE IF EXISTS \\\"{\$table}\\\" CASCADE\");
+    echo \"Dropped table: {\$table}\\n\";
+}
+echo \"Database completely cleaned\\n\";
+"
+
+# Maintenant exécuter les migrations sur une base propre
 echo "=== RUNNING FRESH MIGRATIONS ==="
-php artisan migrate:fresh --force
+php artisan migrate --force
 
 # Nettoyer le cache après que les tables existent
 echo "=== CLEARING APPLICATION CACHE ==="
@@ -98,6 +112,15 @@ php artisan view:cache
 echo "=== TESTING APPLICATION ==="
 php artisan route:list | head -5
 
+# Créer un endpoint de healthcheck
+echo "=== CREATING HEALTHCHECK ==="
+cat > public/health << 'EOF'
+OK
+EOF
+
 echo "=== STARTING APACHE ==="
+echo "Application will be available at: $APP_URL"
+echo "Healthcheck available at: $APP_URL/health"
+
 # Démarrer Apache
 apache2-foreground
