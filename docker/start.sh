@@ -35,7 +35,20 @@ echo "=== ENVIRONMENT CHECK ==="
 echo "APP_ENV: $APP_ENV"
 echo "DB_CONNECTION: $DB_CONNECTION"
 echo "DB_HOST: $DB_HOST"
+echo "DB_PORT: $DB_PORT"
+echo "DB_DATABASE: $DB_DATABASE"
+echo "DB_USERNAME: $DB_USERNAME"
+echo "DB_PASSWORD: [HIDDEN]"
 echo "APP_URL: $APP_URL"
+
+# Tester la connexion à la base de données
+echo "=== DATABASE CONNECTION TEST ==="
+if [ -n "$DB_HOST" ] && [ -n "$DB_PORT" ]; then
+    echo "Testing connection to $DB_HOST:$DB_PORT..."
+    nc -z "$DB_HOST" "$DB_PORT" && echo "✅ Database port is reachable" || echo "❌ Cannot reach database port"
+else
+    echo "❌ DB_HOST or DB_PORT is empty"
+fi
 
 # Générer la clé d'application si elle n'existe pas
 if [ -z "$APP_KEY" ]; then
