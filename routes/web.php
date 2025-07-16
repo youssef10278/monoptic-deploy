@@ -66,10 +66,34 @@ Route::get('/', function () {
     return view('app');
 });
 
+// Route pour servir les assets Vite
+Route::get('/build/assets/{file}', function ($file) {
+    $path = public_path("build/assets/{$file}");
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    $extension = pathinfo($file, PATHINFO_EXTENSION);
+    $mimeTypes = [
+        'js' => 'application/javascript',
+        'mjs' => 'application/javascript',
+        'css' => 'text/css',
+        'map' => 'application/json'
+    ];
+
+    $mimeType = $mimeTypes[$extension] ?? 'text/plain';
+
+    return response()->file($path, [
+        'Content-Type' => $mimeType,
+        'Cache-Control' => 'public, max-age=31536000'
+    ]);
+})->where('file', '.*');
+
 // Routes pour l'application SPA
 Route::get('/{any}', function () {
     return view('app');
-})->where('any', '.*');
+})->where('any', '^(?!build).*');
 
 // Route pour servir l'application SPA Vue.js
 Route::get('/{any}', function () {

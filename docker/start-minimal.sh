@@ -64,20 +64,7 @@ if [ -d "public/build" ]; then
     echo "✅ Build directory exists"
     ls -la public/build/assets/ | head -5
 
-    # Créer .htaccess pour les assets
-    cat > public/build/.htaccess << 'EOF'
-# Servir les assets avec les bons MIME types
-<FilesMatch "\.(js|mjs)$">
-    Header set Content-Type "application/javascript"
-</FilesMatch>
-
-<FilesMatch "\.css$">
-    Header set Content-Type "text/css"
-</FilesMatch>
-
-# Pas de réécriture pour les assets
-RewriteEngine Off
-EOF
+    echo "✅ Assets will be served via Laravel routes"
 
 else
     echo "❌ Build directory missing!"
