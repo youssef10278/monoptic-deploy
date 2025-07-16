@@ -7,8 +7,8 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import AuthenticatedLayout from './layouts/AuthenticatedLayout.vue'
-import SuperAdminLayout from './layouts/SuperAdminLayout.vue'
+import AuthenticatedLayout from './Layouts/AuthenticatedLayout.vue'
+import SuperAdminLayout from './Layouts/SuperAdminLayout.vue'
 
 const route = useRoute()
 
