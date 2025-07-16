@@ -17,13 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->uuid('tenant_id')->nullable(); // Clé étrangère vers tenants, nullable pour Super Admin
-            $table->string('role'); // Rôle de l'utilisateur
             $table->rememberToken();
             $table->timestamps();
 
-            // Définir la clé étrangère
-            $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
+            // Note: tenant_id et role seront ajoutés par une migration ultérieure
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
