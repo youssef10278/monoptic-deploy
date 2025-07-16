@@ -14,8 +14,10 @@ RUN apt-get update && apt-get install -y \
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Configuration Apache
-RUN a2enmod rewrite
+# Configuration Apache avec modules nécessaires pour Laravel
+RUN a2enmod rewrite \
+    && a2enmod headers \
+    && a2enmod ssl
 COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
 
 # Copier l'application
