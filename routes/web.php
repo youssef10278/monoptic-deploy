@@ -66,6 +66,49 @@ Route::get('/', function () {
     return view('app');
 });
 
+// Route de diagnostic pour les assets
+Route::get('/debug/assets', function () {
+    $buildPath = public_path('build');
+    $assetsPath = public_path('build/assets');
+
+    $info = [
+        'timestamp' => now()->toDateTimeString(),
+        'build_directory_exists' => is_dir($buildPath),
+        'assets_directory_exists' => is_dir($assetsPath),
+        'build_contents' => [],
+        'assets_contents' => [],
+        'file_tests' => [],
+        'environment' => [
+            'APP_ENV' => env('APP_ENV'),
+            'APP_URL' => env('APP_URL'),
+            'APP_DEBUG' => env('APP_DEBUG'),
+        ]
+    ];
+
+    if (is_dir($buildPath)) {
+        $info['build_contents'] = array_slice(scandir($buildPath), 2); // Remove . and ..
+    }
+
+    if (is_dir($assetsPath)) {
+        $files = array_slice(scandir($assetsPath), 2);
+        $info['assets_contents'] = $files;
+
+        // Test first few files
+        foreach (array_slice($files, 0, 3) as $file) {
+            $filePath = $assetsPath . '/' . $file;
+            $info['file_tests'][$file] = [
+                'exists' => file_exists($filePath),
+                'readable' => is_readable($filePath),
+                'size' => file_exists($filePath) ? filesize($filePath) : 0,
+                'mime_type' => file_exists($filePath) ? mime_content_type($filePath) : null,
+                'permissions' => file_exists($filePath) ? substr(sprintf('%o', fileperms($filePath)), -4) : null,
+            ];
+        }
+    }
+
+    return response()->json($info, 200, [], JSON_PRETTY_PRINT);
+});
+
 Route::get('/{any}', function () {
     return view('app');
 })->where('any', '.*');

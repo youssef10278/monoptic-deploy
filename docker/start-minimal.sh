@@ -53,22 +53,103 @@ ln -sf /var/www/html /workspace
 envsubst '${PORT}' < /etc/apache2/sites-available/000-default.conf > /tmp/apache-config
 cp /tmp/apache-config /etc/apache2/sites-available/000-default.conf
 
-# Nettoyer et compiler les assets Vue.js avec HTTPS
-echo "=== BUILDING FRONTEND WITH HTTPS ==="
-rm -rf public/build
-npm install
-npm run build
+# ========================================
+# DIAGNOSTIC COMPLET - PHASE 1: AVANT BUILD
+# ========================================
+echo "=== 🔍 DIAGNOSTIC AVANT BUILD ==="
 
-# Vérifier que les assets sont générés
-echo "=== VERIFYING ASSETS ==="
+echo "📋 Node.js version:"
+node --version
+echo "📋 NPM version:"
+npm --version
+
+echo "📋 Workspace structure:"
+ls -la /workspace/
+
+echo "📋 Public directory:"
+ls -la public/ || echo "❌ Public directory not found"
+
+echo "📋 Package.json exists:"
+ls -la package.json || echo "❌ package.json not found"
+
+echo "📋 Node modules before install:"
+ls -la node_modules/ 2>/dev/null | head -3 || echo "❌ node_modules not found"
+
+echo "📋 Existing build directory:"
+ls -la public/build/ 2>/dev/null || echo "✅ No existing build directory (normal)"
+
+# Nettoyer et compiler les assets Vue.js avec HTTPS
+echo ""
+echo "=== 🏗️ BUILDING FRONTEND WITH HTTPS ==="
+rm -rf public/build
+
+echo "📦 Installing dependencies..."
+npm install 2>&1 | tee /tmp/npm-install.log
+
+echo "🔨 Building assets..."
+npm run build 2>&1 | tee /tmp/npm-build.log
+
+# ========================================
+# DIAGNOSTIC COMPLET - PHASE 2: APRÈS BUILD
+# ========================================
+echo ""
+echo "=== 🔍 DIAGNOSTIC APRÈS BUILD ==="
+
+echo "📋 Build logs summary:"
+echo "--- NPM Install Log (last 10 lines) ---"
+tail -10 /tmp/npm-install.log || echo "❌ No install log found"
+echo "--- NPM Build Log (last 15 lines) ---"
+tail -15 /tmp/npm-build.log || echo "❌ No build log found"
+
+echo ""
+echo "📋 Build directory structure:"
 if [ -d "public/build" ]; then
     echo "✅ Build directory exists"
-    ls -la public/build/assets/ | head -5
+    ls -la public/build/
 
-    echo "✅ Assets will be served via Laravel routes"
+    echo ""
+    echo "📋 Assets directory:"
+    if [ -d "public/build/assets" ]; then
+        echo "✅ Assets directory exists"
+        ls -la public/build/assets/
 
+        echo ""
+        echo "📋 Asset files count:"
+        find public/build/assets/ -type f | wc -l
+
+        echo ""
+        echo "📋 JS files:"
+        find public/build/assets/ -name "*.js" -exec ls -la {} \;
+
+        echo ""
+        echo "📋 CSS files:"
+        find public/build/assets/ -name "*.css" -exec ls -la {} \;
+
+        echo ""
+        echo "📋 File permissions:"
+        ls -la public/build/assets/ | head -5
+
+        echo ""
+        echo "📋 Testing file readability:"
+        for file in public/build/assets/*.js; do
+            if [ -f "$file" ]; then
+                echo "Testing: $file"
+                head -1 "$file" 2>/dev/null && echo "✅ Readable" || echo "❌ Not readable"
+                break
+            fi
+        done
+
+    else
+        echo "❌ Assets directory missing!"
+        echo "Build directory contents:"
+        ls -la public/build/
+    fi
 else
     echo "❌ Build directory missing!"
+    echo "Public directory contents:"
+    ls -la public/
+    echo "Checking for build errors..."
+    grep -i error /tmp/npm-build.log || echo "No obvious errors in build log"
     exit 1
 fi
 
