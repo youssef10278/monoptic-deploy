@@ -4,10 +4,20 @@
 echo "Waiting for database..."
 sleep 10
 
+# Créer le fichier .env s'il n'existe pas
+if [ ! -f .env ]; then
+    echo "Creating .env file..."
+    cp .env.example .env
+fi
+
 # Générer la clé d'application si elle n'existe pas
 if [ -z "$APP_KEY" ]; then
     php artisan key:generate --force
 fi
+
+# Nettoyer le cache avant les migrations
+php artisan config:clear
+php artisan cache:clear
 
 # Exécuter les migrations
 php artisan migrate --force
