@@ -63,8 +63,16 @@ class ProductController extends Controller
         try {
             $user = auth()->user();
 
+            // Log pour debug
+            \Log::info('ProductController::store - Début', [
+                'user_id' => $user->id,
+                'tenant_id' => $user->tenant_id,
+                'request_data' => $request->all()
+            ]);
+
             // Vérifier que l'utilisateur appartient à un tenant
             if (!$user->tenant_id) {
+                \Log::error('ProductController::store - Utilisateur sans tenant_id', ['user_id' => $user->id]);
                 return response()->json([
                     'success' => false,
                     'message' => 'Utilisateur non associé à un magasin'
@@ -80,7 +88,7 @@ class ProductController extends Controller
                 'selling_price' => 'required|numeric|min:0',
                 'quantity' => 'required|integer|min:0',
                 'barcode' => 'nullable|string|max:255',
-                'product_category_id' => 'required|exists:product_categories,id',
+                'product_category_id' => 'required|integer|exists:product_categories,id,tenant_id,' . $user->tenant_id,
                 'type' => 'nullable|string|in:frame,accessory,lens,contact_lens',
                 'attributes' => 'nullable|array',
             ], [
@@ -94,6 +102,10 @@ class ProductController extends Controller
             ]);
 
             if ($validator->fails()) {
+                \Log::error('ProductController::store - Validation failed', [
+                    'errors' => $validator->errors()->toArray(),
+                    'request_data' => $request->all()
+                ]);
                 return response()->json([
                     'success' => false,
                     'message' => 'Données de validation invalides',
@@ -106,11 +118,31 @@ class ProductController extends Controller
                 ->where('tenant_id', $user->tenant_id)
                 ->first();
 
+            \Log::info('ProductController::store - Vérification catégorie', [
+                'category_id' => $request->product_category_id,
+                'tenant_id' => $user->tenant_id,
+                'category_found' => $category ? true : false
+            ]);
+
             if (!$category) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Catégorie non trouvée ou non autorisée'
-                ], 422);
+                // Créer des catégories par défaut si elles n'existent pas
+                $this->createDefaultCategories($user->tenant_id);
+
+                // Réessayer de trouver la catégorie
+                $category = ProductCategory::where('id', $request->product_category_id)
+                    ->where('tenant_id', $user->tenant_id)
+                    ->first();
+
+                if (!$category) {
+                    \Log::error('ProductController::store - Catégorie non trouvée même après création par défaut', [
+                        'category_id' => $request->product_category_id,
+                        'tenant_id' => $user->tenant_id
+                    ]);
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Catégorie non trouvée ou non autorisée'
+                    ], 422);
+                }
             }
 
             // Créer le produit avec le tenant_id de l'utilisateur authentifié
@@ -223,7 +255,7 @@ class ProductController extends Controller
                 'selling_price' => 'required|numeric|min:0',
                 'quantity' => 'required|integer|min:0',
                 'barcode' => 'nullable|string|max:255',
-                'product_category_id' => 'required|exists:product_categories,id',
+                'product_category_id' => 'required|integer|exists:product_categories,id,tenant_id,' . $user->tenant_id,
                 'type' => 'nullable|string|in:frame,accessory,lens,contact_lens',
                 'attributes' => 'nullable|array',
             ], [
@@ -328,5 +360,30 @@ class ProductController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Créer des catégories par défaut pour un tenant
+     */
+    private function createDefaultCategories($tenantId)
+    {
+        $defaultCategories = [
+            'Montures',
+            'Verres',
+            'Lentilles de contact',
+            'Accessoires'
+        ];
+
+        foreach ($defaultCategories as $categoryName) {
+            ProductCategory::firstOrCreate([
+                'name' => $categoryName,
+                'tenant_id' => $tenantId
+            ]);
+        }
+
+        \Log::info('ProductController - Catégories par défaut créées', [
+            'tenant_id' => $tenantId,
+            'categories' => $defaultCategories
+        ]);
     }
 }

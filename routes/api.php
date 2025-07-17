@@ -76,6 +76,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('product-categories', ProductCategoryController::class);
     Route::apiResource('products', ProductController::class);
 
+    // Route de debug pour les catégories
+    Route::get('/debug/categories', function (Request $request) {
+        $user = auth()->user();
+        $categories = \App\Models\ProductCategory::where('tenant_id', $user->tenant_id)->get();
+
+        return response()->json([
+            'user_id' => $user->id,
+            'tenant_id' => $user->tenant_id,
+            'categories_count' => $categories->count(),
+            'categories' => $categories->toArray()
+        ]);
+    });
+
     // Routes pour la gestion des ventes (pour AdminMagasin et Employe)
     Route::get('sales', [SaleController::class, 'index']);
     Route::get('sales/{sale}', [SaleController::class, 'show']);

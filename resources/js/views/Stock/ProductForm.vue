@@ -290,14 +290,23 @@ const submitForm = async () => {
   errorMessage.value = ''
 
   try {
+    // Préparer les données en convertissant les types
+    const formData = {
+      ...form.value,
+      product_category_id: parseInt(form.value.product_category_id) || null,
+      purchase_price: parseFloat(form.value.purchase_price) || null,
+      selling_price: parseFloat(form.value.selling_price) || 0,
+      quantity: parseInt(form.value.quantity) || 0
+    }
+
     let response
 
     if (isEditing.value) {
       // Modification
-      response = await axios.put(`/api/products/${props.product.id}`, form.value)
+      response = await axios.put(`/api/products/${props.product.id}`, formData)
     } else {
       // Création
-      response = await axios.post('/api/products', form.value)
+      response = await axios.post('/api/products', formData)
     }
 
     if (response.data.success) {
