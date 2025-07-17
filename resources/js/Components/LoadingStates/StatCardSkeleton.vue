@@ -1,20 +1,20 @@
 <template>
-  <div class="bg-white overflow-hidden shadow rounded-lg animate-pulse">
+  <div class="bg-white overflow-hidden shadow rounded-lg">
     <div class="p-5">
       <div class="flex items-center">
         <div class="flex-shrink-0">
           <!-- Icon skeleton -->
-          <div class="h-8 w-8 bg-gray-200 rounded-full"></div>
+          <div class="h-8 w-8 bg-gray-200 rounded-full animate-pulse"></div>
         </div>
         <div class="ml-5 w-0 flex-1">
           <dl>
             <dt class="text-sm font-medium text-gray-500 truncate">
               <!-- Title skeleton -->
-              <div class="h-4 bg-gray-200 rounded w-24"></div>
+              <div class="h-4 bg-gray-200 rounded w-24 animate-pulse"></div>
             </dt>
             <dd class="mt-1">
               <!-- Value skeleton -->
-              <div class="h-8 bg-gray-200 rounded w-16"></div>
+              <div class="h-8 bg-gray-200 rounded w-16 animate-pulse"></div>
             </dd>
           </dl>
         </div>

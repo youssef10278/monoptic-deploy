@@ -219,7 +219,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { formatPrice } from '../utils/currency.js'
-import StatCardSkeleton from '../components/LoadingStates/StatCardSkeleton.vue'
+import StatCardSkeleton from '../Components/LoadingStates/StatCardSkeleton.vue'
 
 // États de chargement
 const isLoadingStats = ref(true)
