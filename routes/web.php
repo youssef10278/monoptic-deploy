@@ -61,10 +61,17 @@ if (env('APP_ENV') !== 'production') {
     });
 }
 
-// Route principale - Interface Monoptic
-Route::get('/', function () {
+// Route principale - Landing Page MONOPTI
+Route::get('/', [App\Http\Controllers\LandingController::class, 'index'])->name('landing');
+
+// Routes pour la landing page
+Route::get('/demo', [App\Http\Controllers\LandingController::class, 'requestDemo'])->name('demo.request');
+Route::post('/contact', [App\Http\Controllers\LandingController::class, 'contact'])->name('contact');
+
+// Route pour l'application - Interface Monoptic
+Route::get('/app', function () {
     return view('app');
-});
+})->name('app');
 
 // Route de diagnostic pour les utilisateurs
 Route::get('/debug/users', function () {
@@ -171,6 +178,19 @@ Route::get('/debug/assets', function () {
     return response()->json($info, 200, [], JSON_PRETTY_PRINT);
 });
 
-Route::get('/{any}', function () {
-    return view('app');
-})->where('any', '.*');
+// Routes pour l'authentification et l'application
+Route::middleware(['web'])->group(function () {
+    // Routes d'authentification
+    Route::get('/login', function () {
+        return view('app');
+    })->name('login');
+
+    Route::get('/register', function () {
+        return view('app');
+    })->name('register');
+
+    // Toutes les autres routes de l'application
+    Route::get('/{any}', function () {
+        return view('app');
+    })->where('any', '^(?!api).*$'); // Exclut les routes API
+});

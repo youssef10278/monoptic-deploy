@@ -64,6 +64,18 @@ p {
     box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
 }
 
+.btn-secondary {
+    background: transparent;
+    color: #3b82f6;
+    border: 2px solid #3b82f6;
+}
+
+.btn-secondary:hover {
+    background: #3b82f6;
+    color: white;
+    transform: translateY(-2px);
+}
+
 .btn-large {
     padding: 16px 32px;
     font-size: 1.1rem;
@@ -91,6 +103,12 @@ p {
 .navbar .container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 1rem;
     align-items: center;
 }
 

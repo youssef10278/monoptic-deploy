@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONOPTI - La solution complète pour votre magasin d'optique</title>
+    <meta name="description" content="MONOPTI - Logiciel de gestion spécialisé pour opticiens. Gestion clients, stock, ventes. Interface intuitive, prise en main en 5 minutes. Essai gratuit 30 jours.">
+    <meta name="keywords" content="logiciel opticien, gestion magasin optique, MONOPTI, point de vente optique, gestion stock lunettes">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:title" content="MONOPTI - La solution complète pour votre magasin d'optique">
+    <meta property="og:description" content="Interface conçue POUR les opticiens - Maîtrisée en 5 minutes. Essai gratuit 30 jours.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url('/') }}">
+    <meta property="twitter:title" content="MONOPTI - La solution complète pour votre magasin d'optique">
+    <meta property="twitter:description" content="Interface conçue POUR les opticiens - Maîtrisée en 5 minutes. Essai gratuit 30 jours.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1 class="logo">MONOPTI</h1>
+            </div>
+            <div class="nav-actions">
+                <a href="#demo" class="btn btn-primary">Demander une démo</a>
+                <a href="{{ route('login') }}" class="btn btn-secondary">Se connecter</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="brand">MONOPTI</span><br>
+                        La solution complète pour votre magasin d'optique
+                    </h1>
+                    <p class="hero-subtitle">
+                        Interface conçue <strong>POUR les opticiens</strong><br>
+                        Gestion clients, stock, ventes - Tout en un
+                    </p>
+                    <div class="hero-features">
+                        <div class="feature-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Prise en main en 5 minutes</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Essai gratuit 30 jours</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-headset"></i>
+                            <span>Support en français</span>
+                        </div>
+                    </div>
+                    <div class="hero-cta">
+                        <a href="https://wa.me/212600400436?text=Bonjour%2C+je+souhaite+plus+d'informations+concernant+MONOPTI" 
+                           class="btn btn-primary btn-large" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            Demander une démo
+                        </a>
+                        <p class="cta-note">Réponse sous 2h • Sans engagement</p>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="screenshot-container">
+                        <img src="{{ asset('images/screenshots/pos-interface.png') }}" alt="Interface MONOPTI - Point de vente" class="hero-screenshot">
+                        <div class="screenshot-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problems Section -->
+    <section class="problems">
+        <div class="container">
+            <div class="section-header">
+                <h2>Perdez-vous du temps avec des logiciels génériques ?</h2>
+                <p>Les opticiens ont des besoins spécifiques que les logiciels classiques ne comprennent pas</p>
+            </div>
+            <div class="problems-grid">
+                <div class="problem-item">
+                    <i class="fas fa-clock text-red"></i>
+                    <h3>Gestion manuelle fastidieuse</h3>
+                    <p>Saisie répétitive, calculs manuels, erreurs fréquentes</p>
+                </div>
+                <div class="problem-item">
+                    <i class="fas fa-users text-red"></i>
+                    <h3>Perte de clients</h3>
+                    <p>Pas de suivi personnalisé, rendez-vous oubliés</p>
+                </div>
+                <div class="problem-item">
+                    <i class="fas fa-boxes text-red"></i>
+                    <h3>Stock mal géré</h3>
+                    <p>Ruptures imprevues, surstocks coûteux</p>
+                </div>
+                <div class="problem-item">
+                    <i class="fas fa-file-alt text-red"></i>
+                    <h3>Paperasse administrative</h3>
+                    <p>Factures manuelles, devis compliqués</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution">
+        <div class="container">
+            <div class="solution-content">
+                <div class="solution-text">
+                    <h2>MONOPTI comprend votre métier</h2>
+                    <p class="solution-subtitle">
+                        Enfin un logiciel qui parle votre langue d'opticien
+                    </p>
+                    <ul class="solution-list">
+                        <li><i class="fas fa-check"></i> Terminologie optique intégrée : sphère, cylindre, axe, addition</li>
+                        <li><i class="fas fa-check"></i> Configuration lentilles professionnelle étape par étape</li>
+                        <li><i class="fas fa-check"></i> Calculs automatiques des corrections et traitements</li>
+                        <li><i class="fas fa-check"></i> Workflow naturel adapté à votre quotidien</li>
+                    </ul>
+                </div>
+                <div class="solution-image">
+                    <img src="{{ asset('images/screenshots/lentilles-config.png') }}" alt="Configuration lentilles MONOPTI" class="solution-screenshot">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Tout ce dont vous avez besoin en une seule interface</h2>
+                <p>MONOPTI centralise toutes vos activités quotidiennes</p>
+            </div>
+            <div class="features-grid">
+                <!-- Feature 1: Gestion Clients -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Gestion Clients Intelligente</h3>
+                        <p>Trouvez vos clients instantanément, historique complet, rappels automatiques</p>
+                        <div class="feature-image">
+                            <img src="{{ asset('images/screenshots/pos-interface.png') }}" alt="Recherche client MONOPTI">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Configuration Lentilles -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Configuration Lentilles Professionnelle</h3>
+                        <p>Sphérique souple, torique, multifocale - Configuration guidée étape par étape</p>
+                        <div class="feature-image">
+                            <img src="{{ asset('images/screenshots/lentilles-config.png') }}" alt="Configuration lentilles MONOPTI">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Point de Vente -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Point de Vente Intuitif</h3>
+                        <p>Panier intelligent, calculs automatiques, paiement simplifié</p>
+                        <div class="feature-image">
+                            <img src="{{ asset('images/screenshots/pos-interface.png') }}" alt="Point de vente MONOPTI">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 4: Verres Personnalisés -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-glasses"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Verres Personnalisés</h3>
+                        <p>Tous types de corrections, traitements anti-reflet, photochromique, anti-buée</p>
+                        <div class="feature-image">
+                            <img src="{{ asset('images/screenshots/verres-personnalises.png') }}" alt="Verres personnalisés MONOPTI">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 5: Gestion Stock -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Gestion Stock Complète</h3>
+                        <p>Montures, accessoires, verres, lentilles - Recherche rapide par catégories</p>
+                        <div class="feature-image">
+                            <img src="{{ asset('images/screenshots/pos-interface.png') }}" alt="Gestion stock MONOPTI">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 6: Calculs Automatiques -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Calculs Automatiques</h3>
+                        <p>Prix calculés automatiquement, paiements simplifiés, factures générées</p>
+                        <div class="feature-image">
+                            <img src="{{ asset('images/screenshots/pos-interface.png') }}" alt="Calculs automatiques MONOPTI">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages Section -->
+    <section class="advantages">
+        <div class="container">
+            <div class="section-header">
+                <h2>Pourquoi choisir MONOPTI ?</h2>
+            </div>
+            <div class="advantages-grid">
+                <div class="advantage-item">
+                    <i class="fas fa-eye text-blue"></i>
+                    <h3>Spécialisé optique</h3>
+                    <p>Conçu POUR les opticiens</p>
+                </div>
+                <div class="advantage-item">
+                    <i class="fas fa-mouse text-blue"></i>
+                    <h3>Interface intuitive</h3>
+                    <p>Prise en main en 5 minutes</p>
+                </div>
+                <div class="advantage-item">
+                    <i class="fas fa-headset text-blue"></i>
+                    <h3>Support français</h3>
+                    <p>Équipe dédiée, formation incluse</p>
+                </div>
+                <div class="advantage-item">
+                    <i class="fas fa-tag text-blue"></i>
+                    <h3>Prix transparent</h3>
+                    <p>Pas de frais cachés</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Tarification simple et transparente</h2>
+                <p>Un seul plan, toutes les fonctionnalités incluses</p>
+            </div>
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>MONOPTI Complet</h3>
+                    <div class="price-badge">OFFRE DE LANCEMENT</div>
+                </div>
+                <div class="pricing-content">
+                    <div class="price-row">
+                        <div class="price-item">
+                            <span class="price-label">1ère année</span>
+                            <span class="price-value">1500 MAD</span>
+                            <span class="price-detail">125 MAD/mois</span>
+                        </div>
+                        <div class="price-arrow">→</div>
+                        <div class="price-item">
+                            <span class="price-label">Années suivantes</span>
+                            <span class="price-value">1000 MAD</span>
+                            <span class="price-detail">83 MAD/mois</span>
+                        </div>
+                    </div>
+                    <div class="savings-highlight">
+                        <i class="fas fa-gift"></i>
+                        Économisez 500 MAD dès la 2ème année !
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Toutes les fonctionnalités incluses</li>
+                        <li><i class="fas fa-check"></i> Support et formation gratuits</li>
+                        <li><i class="fas fa-check"></i> Mises à jour automatiques</li>
+                        <li><i class="fas fa-check"></i> Sauvegarde sécurisée</li>
+                        <li><i class="fas fa-check"></i> Essai gratuit 30 jours</li>
+                    </ul>
+                    <div class="pricing-cta">
+                        <a href="https://wa.me/212600400436?text=Bonjour%2C+je+souhaite+plus+d'informations+concernant+MONOPTI" 
+                           class="btn btn-primary btn-large" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            Commencer l'essai gratuit
+                        </a>
+                        <p class="cta-note">30 jours gratuits • Sans engagement • Sans carte bancaire</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Questions fréquentes</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Comment fonctionne l'essai gratuit MONOPTI ?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>L'essai gratuit dure 30 jours complets avec accès à toutes les fonctionnalités. Aucune carte bancaire requise. Vous pouvez annuler à tout moment sans frais.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Comment se passe l'installation et la migration des données ?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Notre équipe s'occupe de tout ! Installation à distance, migration de vos données existantes, et formation personnalisée incluse dans le prix.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Le support et la formation sont-ils vraiment inclus ?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui, 100% inclus ! Support téléphonique en français, formation vidéo, documentation complète, et assistance technique illimitée.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>MONOPTI est-il conforme au RGPD et sécurisé ?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolument. Données chiffrées, serveurs sécurisés, sauvegardes automatiques quotidiennes, et conformité RGPD garantie.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Que se passe-t-il après la première année ?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Le tarif passe à 1000 MAD/an (83 MAD/mois), soit 500 MAD d'économie ! Toutes les fonctionnalités et le support restent inclus.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Prêt à révolutionner votre magasin d'optique ?</h2>
+                <p>Rejoignez les opticiens qui ont choisi MONOPTI pour simplifier leur quotidien</p>
+                <div class="cta-buttons">
+                    <a href="https://wa.me/212600400436?text=Bonjour%2C+je+souhaite+plus+d'informations+concernant+MONOPTI" 
+                       class="btn btn-primary btn-large" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Demander une démo
+                    </a>
+                    <a href="{{ route('login') }}" class="btn btn-secondary btn-large">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Accéder à l'application
+                    </a>
+                </div>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> +212 600 400 436</p>
+                    <p><i class="fas fa-clock"></i> Disponible 7j/7 de 9h à 18h</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>MONOPTI</h3>
+                    <p>La solution complète pour votre magasin d'optique</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <p>+212 600 400 436</p>
+                        <p>WhatsApp disponible</p>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Application</h4>
+                        <p><a href="{{ route('login') }}">Se connecter</a></p>
+                        <p><a href="{{ route('register') }}">S'inscrire</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MONOPTI. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ asset('js/landing.js') }}"></script>
+</body>
+</html>
