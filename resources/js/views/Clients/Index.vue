@@ -234,9 +234,9 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import ClientForm from './ClientForm.vue'
-import StatCardSkeleton from '../Components/LoadingStates/StatCardSkeleton.vue'
-import TableSkeleton from '../Components/LoadingStates/TableSkeleton.vue'
-import EmptyState from '../Components/LoadingStates/EmptyState.vue'
+import StatCardSkeleton from '../../Components/LoadingStates/StatCardSkeleton.vue'
+import TableSkeleton from '../../Components/LoadingStates/TableSkeleton.vue'
+import EmptyState from '../../Components/LoadingStates/EmptyState.vue'
 
 // État réactif
 const clients = ref([])
