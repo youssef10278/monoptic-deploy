@@ -23,7 +23,8 @@
 
     <!-- Statistiques rapides -->
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-      <div class="bg-white overflow-hidden shadow rounded-lg">
+      <StatCardSkeleton v-if="isLoading" />
+      <div v-else class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
             <div class="flex-shrink-0">
@@ -45,7 +46,8 @@
         </div>
       </div>
 
-      <div class="bg-white overflow-hidden shadow rounded-lg">
+      <StatCardSkeleton v-if="isLoading" />
+      <div v-else class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
             <div class="flex-shrink-0">
@@ -67,7 +69,8 @@
         </div>
       </div>
 
-      <div class="bg-white overflow-hidden shadow rounded-lg">
+      <StatCardSkeleton v-if="isLoading" />
+      <div v-else class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
             <div class="flex-shrink-0">
@@ -91,37 +94,26 @@
     </div>
 
     <!-- Liste des clients -->
-    <div class="bg-white shadow rounded-lg">
+    <TableSkeleton v-if="isLoading" :rows="8" :columns="5" />
+    <div v-else class="bg-white shadow rounded-lg">
       <div class="px-4 py-5 sm:p-6">
         <h2 class="text-lg font-medium text-gray-900 mb-4">Liste des clients</h2>
-        
-        <div v-if="isLoading" class="flex justify-center py-8">
-          <svg class="animate-spin h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-        </div>
 
-        <div v-else-if="clients.length === 0" class="text-center py-8">
-          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
-          </svg>
-          <h3 class="mt-2 text-sm font-medium text-gray-900">Aucun client</h3>
-          <p class="mt-1 text-sm text-gray-500">Commencez par ajouter votre premier client.</p>
-          <div class="mt-6">
-            <button
-              @click="showCreateForm = true"
-              class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-              </svg>
-              Nouveau Client
-            </button>
-          </div>
-        </div>
+        <EmptyState
+          v-if="clients.length === 0"
+          title="Aucun client"
+          description="Commencez par ajouter votre premier client."
+          action-text="Ajouter un client"
+          @action="showCreateForm = true"
+        >
+          <template #icon>
+            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+            </svg>
+          </template>
+        </EmptyState>
 
-        <div v-else class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
           <table class="min-w-full divide-y divide-gray-300">
             <thead class="bg-gray-50">
               <tr>
@@ -242,6 +234,9 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import ClientForm from './ClientForm.vue'
+import StatCardSkeleton from '../components/LoadingStates/StatCardSkeleton.vue'
+import TableSkeleton from '../components/LoadingStates/TableSkeleton.vue'
+import EmptyState from '../components/LoadingStates/EmptyState.vue'
 
 // État réactif
 const clients = ref([])
