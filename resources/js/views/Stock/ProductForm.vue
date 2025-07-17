@@ -31,6 +31,20 @@
                     />
                   </div>
 
+                  <!-- Marque -->
+                  <div>
+                    <label for="brand" class="block text-sm font-medium text-gray-700">
+                      Marque
+                    </label>
+                    <input
+                      id="brand"
+                      v-model="form.brand"
+                      type="text"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      placeholder="Ex: Ray-Ban, Oakley..."
+                    />
+                  </div>
+
                   <!-- Référence -->
                   <div>
                     <label for="reference" class="block text-sm font-medium text-gray-700">
@@ -210,6 +224,7 @@ const errorMessage = ref('')
 // Formulaire
 const form = ref({
   name: '',
+  brand: '',
   reference: '',
   purchase_price: '',
   selling_price: '',
@@ -225,6 +240,7 @@ const isEditing = computed(() => !!props.product)
 const resetForm = () => {
   form.value = {
     name: '',
+    brand: '',
     reference: '',
     purchase_price: '',
     selling_price: '',
@@ -240,6 +256,7 @@ watch(() => props.product, (newProduct) => {
   if (newProduct) {
     form.value = {
       name: newProduct.name || '',
+      brand: newProduct.brand || '',
       reference: newProduct.reference || '',
       purchase_price: newProduct.purchase_price || '',
       selling_price: newProduct.selling_price || '',

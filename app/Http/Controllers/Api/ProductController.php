@@ -74,6 +74,7 @@ class ProductController extends Controller
             // Validation des données
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
+                'brand' => 'nullable|string|max:255',
                 'reference' => 'nullable|string|max:255',
                 'purchase_price' => 'nullable|numeric|min:0',
                 'selling_price' => 'required|numeric|min:0',
@@ -115,6 +116,7 @@ class ProductController extends Controller
             // Créer le produit avec le tenant_id de l'utilisateur authentifié
             $product = Product::create([
                 'name' => $request->name,
+                'brand' => $request->brand,
                 'reference' => $request->reference,
                 'purchase_price' => $request->purchase_price,
                 'selling_price' => $request->selling_price,
@@ -215,6 +217,7 @@ class ProductController extends Controller
             // Validation des données
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
+                'brand' => 'nullable|string|max:255',
                 'reference' => 'nullable|string|max:255',
                 'purchase_price' => 'nullable|numeric|min:0',
                 'selling_price' => 'required|numeric|min:0',
@@ -256,6 +259,7 @@ class ProductController extends Controller
             // Mettre à jour le produit
             $product->update([
                 'name' => $request->name,
+                'brand' => $request->brand,
                 'reference' => $request->reference,
                 'purchase_price' => $request->purchase_price,
                 'selling_price' => $request->selling_price,
