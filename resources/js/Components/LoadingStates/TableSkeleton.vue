@@ -12,14 +12,14 @@
           <thead class="bg-gray-50">
             <tr>
               <th v-for="n in columns" :key="n" class="px-6 py-3">
-                <div class="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
+                <div class="h-4 bg-gray-200 rounded animate-pulse" :class="getColumnWidth(n)"></div>
               </th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="row in rows" :key="row">
+            <tr v-for="row in rows" :key="row" class="hover:bg-gray-50">
               <td v-for="col in columns" :key="col" class="px-6 py-4 whitespace-nowrap">
-                <div class="h-4 bg-gray-200 rounded animate-pulse w-20"></div>
+                <div class="h-4 bg-gray-200 rounded animate-pulse" :class="getColumnWidth(col)"></div>
               </td>
             </tr>
           </tbody>
@@ -30,7 +30,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   rows: {
     type: Number,
     default: 5
@@ -40,4 +42,24 @@ defineProps({
     default: 4
   }
 })
+
+const getColumnWidth = (index) => {
+  const widths = ['w-32', 'w-24', 'w-20', 'w-16', 'w-28', 'w-20']
+  return widths[index % widths.length] || 'w-24'
+}
 </script>
+
+<style scoped>
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+</style>

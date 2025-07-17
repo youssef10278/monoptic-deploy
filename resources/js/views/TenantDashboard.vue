@@ -21,8 +21,7 @@
     <!-- Statistiques rapides -->
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       <!-- Clients -->
-      <StatCardSkeleton v-if="isLoadingStats" />
-      <div v-else class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
             <div class="flex-shrink-0">
@@ -36,7 +35,7 @@
                   Clients
                 </dt>
                 <dd class="text-lg font-medium text-gray-900">
-                  {{ stats.clients }}
+                  {{ stats.clients || 0 }}
                 </dd>
               </dl>
             </div>
@@ -45,8 +44,7 @@
       </div>
 
       <!-- Produits -->
-      <StatCardSkeleton v-if="isLoadingStats" />
-      <div v-else class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
             <div class="flex-shrink-0">
@@ -60,7 +58,7 @@
                   Produits
                 </dt>
                 <dd class="text-lg font-medium text-gray-900">
-                  {{ stats.products }}
+                  {{ stats.products || 0 }}
                 </dd>
               </dl>
             </div>
@@ -69,8 +67,7 @@
       </div>
 
       <!-- Ventes -->
-      <StatCardSkeleton v-if="isLoadingStats" />
-      <div v-else class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
             <div class="flex-shrink-0">
@@ -84,7 +81,7 @@
                   Ventes
                 </dt>
                 <dd class="text-lg font-medium text-gray-900">
-                  {{ stats.sales }}
+                  {{ stats.sales || 0 }}
                 </dd>
               </dl>
             </div>
@@ -93,8 +90,7 @@
       </div>
 
       <!-- Chiffre d'affaires -->
-      <StatCardSkeleton v-if="isLoadingStats" />
-      <div v-else class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="p-5">
           <div class="flex items-center">
             <div class="flex-shrink-0">
@@ -108,7 +104,7 @@
                   Chiffre d'Affaires
                 </dt>
                 <dd class="text-lg font-medium text-gray-900">
-                  {{ formatPrice(stats.revenue) }}
+                  {{ formatPrice(stats.revenue || 0) }}
                 </dd>
               </dl>
             </div>
@@ -219,11 +215,6 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { formatPrice } from '../utils/currency.js'
-import StatCardSkeleton from '../Components/LoadingStates/StatCardSkeleton.vue'
-
-// États de chargement
-const isLoadingStats = ref(true)
-const isLoadingUser = ref(true)
 
 // État réactif
 const user = ref(null)
@@ -243,7 +234,6 @@ const dateFilter = ref({
 
 // Charger les informations utilisateur
 const loadUserInfo = async () => {
-  isLoadingUser.value = true
   try {
     const response = await axios.get('/api/user')
     if (response.data.success) {
@@ -251,14 +241,11 @@ const loadUserInfo = async () => {
     }
   } catch (error) {
     console.error('Erreur lors du chargement des informations utilisateur:', error)
-  } finally {
-    isLoadingUser.value = false
   }
 }
 
 // Charger les statistiques
 const loadStats = async () => {
-  isLoadingStats.value = true
   try {
     const response = await axios.get('/api/dashboard')
     if (response.data.success) {
@@ -273,17 +260,14 @@ const loadStats = async () => {
       sales: 0,
       revenue: 0
     }
-  } finally {
-    isLoadingStats.value = false
   }
 }
 
+// La fonction formatPrice est maintenant importée depuis utils/currency.js
+
 // Charger les données au montage du composant
-onMounted(async () => {
-  // Charger les données en parallèle pour optimiser
-  await Promise.all([
-    loadUserInfo(),
-    loadStats()
-  ])
+onMounted(() => {
+  loadUserInfo()
+  loadStats()
 })
 </script>
