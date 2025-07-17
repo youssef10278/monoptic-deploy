@@ -66,6 +66,68 @@ Route::get('/', function () {
     return view('app');
 });
 
+// Route de diagnostic pour les utilisateurs
+Route::get('/debug/users', function () {
+    $users = \App\Models\User::all(['id', 'name', 'email', 'role', 'created_at']);
+    $tenants = \App\Models\Tenant::all(['id', 'name', 'status', 'created_at']);
+
+    return response()->json([
+        'timestamp' => now()->toDateTimeString(),
+        'users_count' => $users->count(),
+        'tenants_count' => $tenants->count(),
+        'users' => $users,
+        'tenants' => $tenants,
+        'database_tables' => \DB::select("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'") ?:
+                            \DB::select("SELECT table_name as name FROM information_schema.tables WHERE table_schema = 'public'"),
+    ], 200, [], JSON_PRETTY_PRINT);
+});
+
+// Route d'urgence pour créer un admin
+Route::get('/debug/create-admin', function () {
+    try {
+        // Vérifier si un super admin existe déjà
+        $existingAdmin = \App\Models\User::where('role', \App\Enums\UserRole::SuperAdmin)->first();
+
+        if ($existingAdmin) {
+            return response()->json([
+                'status' => 'exists',
+                'message' => 'Super admin already exists',
+                'admin' => [
+                    'email' => $existingAdmin->email,
+                    'name' => $existingAdmin->name,
+                    'created_at' => $existingAdmin->created_at
+                ]
+            ], 200, [], JSON_PRETTY_PRINT);
+        }
+
+        // Créer un super admin
+        $admin = \App\Models\User::create([
+            'name' => 'Super Admin',
+            'email' => 'admin@monoptic.com',
+            'password' => \Hash::make('password123'),
+            'role' => \App\Enums\UserRole::SuperAdmin,
+            'tenant_id' => null,
+        ]);
+
+        return response()->json([
+            'status' => 'created',
+            'message' => 'Super admin created successfully',
+            'admin' => [
+                'email' => $admin->email,
+                'password' => 'password123',
+                'name' => $admin->name
+            ]
+        ], 200, [], JSON_PRETTY_PRINT);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500, [], JSON_PRETTY_PRINT);
+    }
+});
+
 // Route de diagnostic pour les assets
 Route::get('/debug/assets', function () {
     $buildPath = public_path('build');
