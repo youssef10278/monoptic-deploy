@@ -120,11 +120,6 @@
                     <h3>Stock mal géré</h3>
                     <p>Ruptures imprevues, surstocks coûteux</p>
                 </div>
-                <div class="problem-item">
-                    <i class="fas fa-file-alt text-red"></i>
-                    <h3>Paperasse administrative</h3>
-                    <p>Factures manuelles, devis compliqués</p>
-                </div>
             </div>
         </div>
     </section>
