@@ -19,7 +19,13 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => [
+        env('FRONTEND_URL', 'http://localhost:3000'),
+        env('APP_URL', 'http://localhost'),
+        'https://www.monopti.com',
+        'https://monopti.com',
+        'https://monoptic-deploy-production.up.railway.app'
+    ],
 
     'allowed_origins_patterns' => [],
 
