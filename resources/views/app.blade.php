@@ -13,6 +13,27 @@
 
         <!-- Scripts -->
         @vite(['resources/js/app.js'])
+
+        <script>
+            // Fix double protocol in asset URLs
+            document.addEventListener('DOMContentLoaded', function() {
+                const links = document.querySelectorAll('link[href*="https//"]');
+                links.forEach(link => {
+                    link.href = link.href.replace('https//monoptic-deploy-production.up.railway.app', 'https://monoptic-deploy-production.up.railway.app');
+                });
+
+                const scripts = document.querySelectorAll('script[src*="https//"]');
+                scripts.forEach(script => {
+                    const newSrc = script.src.replace('https//monoptic-deploy-production.up.railway.app', 'https://monoptic-deploy-production.up.railway.app');
+                    if (newSrc !== script.src) {
+                        const newScript = document.createElement('script');
+                        newScript.src = newSrc;
+                        newScript.type = script.type;
+                        script.parentNode.replaceChild(newScript, script);
+                    }
+                });
+            });
+        </script>
     </head>
     <body class="font-sans antialiased">
         <div id="app">

@@ -15,12 +15,19 @@ class ForceHttpsUrls
     {
         // Force HTTPS URLs in production
         if (app()->environment('production')) {
-            URL::forceScheme('https');
-            
-            // Ensure proper root URL
             $appUrl = config('app.url');
+
+            // Only set if we have a valid URL
             if ($appUrl && filter_var($appUrl, FILTER_VALIDATE_URL)) {
-                URL::forceRootUrl($appUrl);
+                // Parse URL to ensure it's properly formatted
+                $parsed = parse_url($appUrl);
+                if ($parsed && isset($parsed['scheme'], $parsed['host'])) {
+                    URL::forceScheme($parsed['scheme']);
+                    URL::forceRootUrl($appUrl);
+                }
+            } else {
+                // Fallback to HTTPS scheme only
+                URL::forceScheme('https');
             }
         }
 
