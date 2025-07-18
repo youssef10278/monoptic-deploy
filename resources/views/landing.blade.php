@@ -163,9 +163,6 @@
                     <div class="feature-content">
                         <h3>Gestion Clients Intelligente</h3>
                         <p>Trouvez vos clients instantanément, historique complet, rappels automatiques</p>
-                        <div class="feature-image">
-                            <img src="{{ asset('images/screenshots/pos-interface.png') }}" alt="Recherche client MONOPTI">
-                        </div>
                     </div>
                 </div>
 
@@ -177,9 +174,6 @@
                     <div class="feature-content">
                         <h3>Configuration Lentilles Professionnelle</h3>
                         <p>Sphérique souple, torique, multifocale - Configuration guidée étape par étape</p>
-                        <div class="feature-image">
-                            <img src="{{ asset('images/screenshots/lentilles-config.png') }}" alt="Configuration lentilles MONOPTI">
-                        </div>
                     </div>
                 </div>
 
@@ -191,9 +185,6 @@
                     <div class="feature-content">
                         <h3>Point de Vente Intuitif</h3>
                         <p>Panier intelligent, calculs automatiques, paiement simplifié</p>
-                        <div class="feature-image">
-                            <img src="{{ asset('images/screenshots/pos-interface.png') }}" alt="Point de vente MONOPTI">
-                        </div>
                     </div>
                 </div>
 
@@ -205,9 +196,6 @@
                     <div class="feature-content">
                         <h3>Verres Personnalisés</h3>
                         <p>Tous types de corrections, traitements anti-reflet, photochromique, anti-buée</p>
-                        <div class="feature-image">
-                            <img src="{{ asset('images/screenshots/verres-personnalises.png') }}" alt="Verres personnalisés MONOPTI">
-                        </div>
                     </div>
                 </div>
 
@@ -219,9 +207,6 @@
                     <div class="feature-content">
                         <h3>Gestion Stock Complète</h3>
                         <p>Montures, accessoires, verres, lentilles - Recherche rapide par catégories</p>
-                        <div class="feature-image">
-                            <img src="{{ asset('images/screenshots/pos-interface.png') }}" alt="Gestion stock MONOPTI">
-                        </div>
                     </div>
                 </div>
 
@@ -233,9 +218,6 @@
                     <div class="feature-content">
                         <h3>Calculs Automatiques</h3>
                         <p>Prix calculés automatiquement, paiements simplifiés, factures générées</p>
-                        <div class="feature-image">
-                            <img src="{{ asset('images/screenshots/pos-interface.png') }}" alt="Calculs automatiques MONOPTI">
-                        </div>
                     </div>
                 </div>
             </div>
