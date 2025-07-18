@@ -89,6 +89,88 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ]);
     });
 
+    // Route de test ultra-simple pour produits
+    Route::post('/debug/test-product', function (Request $request) {
+        try {
+            \Log::info('DEBUG TEST PRODUCT - Début', [
+                'auth_check' => auth()->check(),
+                'request_data' => $request->all(),
+                'headers' => $request->headers->all()
+            ]);
+
+            if (!auth()->check()) {
+                return response()->json(['error' => 'Not authenticated'], 401);
+            }
+
+            $user = auth()->user();
+
+            \Log::info('DEBUG TEST PRODUCT - User info', [
+                'user_id' => $user->id,
+                'tenant_id' => $user->tenant_id,
+                'user_role' => $user->role
+            ]);
+
+            // Test création simple
+            $product = \App\Models\Product::create([
+                'name' => 'Test Product',
+                'selling_price' => 100,
+                'quantity' => 1,
+                'product_category_id' => 1, // ID fixe pour test
+                'tenant_id' => $user->tenant_id,
+                'type' => 'accessory'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Test product created',
+                'product' => $product
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('DEBUG TEST PRODUCT - Exception', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    });
+
+    // Route de debug pour la structure DB
+    Route::get('/debug/db-structure', function (Request $request) {
+        try {
+            $user = auth()->user();
+
+            // Vérifier les tables
+            $tables = \DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
+
+            // Vérifier la structure de products
+            $productColumns = \DB::select("SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_name = 'products'");
+
+            // Vérifier les catégories existantes
+            $categories = \App\Models\ProductCategory::where('tenant_id', $user->tenant_id)->get();
+
+            // Vérifier les contraintes
+            $constraints = \DB::select("SELECT constraint_name, constraint_type FROM information_schema.table_constraints WHERE table_name = 'products'");
+
+            return response()->json([
+                'user_tenant_id' => $user->tenant_id,
+                'tables' => $tables,
+                'product_columns' => $productColumns,
+                'categories' => $categories,
+                'constraints' => $constraints
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    });
+
     // Routes pour la gestion des ventes (pour AdminMagasin et Employe)
     Route::get('sales', [SaleController::class, 'index']);
     Route::get('sales/{sale}', [SaleController::class, 'show']);
