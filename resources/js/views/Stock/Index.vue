@@ -15,13 +15,17 @@
           <!-- Bouton Ajouter une monture -->
           <button
             @click="openAddFrameModal"
-            class="inline-flex items-center justify-center px-4 py-3 md:py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full sm:w-auto"
+            :disabled="!frameCategory"
+            class="inline-flex items-center justify-center px-4 py-3 md:py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>
             <span class="hidden sm:inline">Ajouter une </span>monture
           </button>
+          <p v-if="!frameCategory" class="text-xs text-red-500 mt-2">
+            Pour ajouter une monture, vous devez d'abord créer une catégorie de produits nommée "Montures".
+          </p>
 
           <!-- Bouton Ajouter un accessoire -->
           <button
@@ -296,8 +300,9 @@
         >
           <button
             @click="openAddFrameModal(); showFloatingMenu = false"
-            class="bg-green-600 hover:bg-green-700 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110"
-            title="Ajouter une monture"
+            :disabled="!frameCategory"
+            class="bg-green-600 hover:bg-green-700 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+            :title="frameCategory ? 'Ajouter une monture' : 'Créez d\'abord une catégorie Montures'"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -392,10 +397,10 @@ const filteredProducts = computed(() => {
 
 // Computed properties pour les catégories spécifiques
 const frameCategory = computed(() => {
-  return categories.value.find(cat => 
-    cat.name.toLowerCase().includes('monture') || 
+  return categories.value.find(cat =>
+    cat.name.toLowerCase().includes('monture') ||
     cat.name.toLowerCase().includes('frame')
-  ) || categories.value[0] // Fallback sur la première catégorie
+  );
 })
 
 const accessoryCategory = computed(() => {
