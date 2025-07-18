@@ -171,6 +171,69 @@ Route::middleware(['auth:sanctum'])->group(function () {
         }
     });
 
+    // Route pour créer les catégories par défaut
+    Route::post('/create-default-categories', function (Request $request) {
+        try {
+            $user = auth()->user();
+
+            if (!$user->tenant_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Utilisateur sans tenant_id'
+                ], 403);
+            }
+
+            // Catégories par défaut
+            $defaultCategories = [
+                'Montures',
+                'Verres',
+                'Lentilles de contact',
+                'Accessoires'
+            ];
+
+            $created = [];
+            $existing = [];
+
+            foreach ($defaultCategories as $categoryName) {
+                $category = \App\Models\ProductCategory::firstOrCreate([
+                    'name' => $categoryName,
+                    'tenant_id' => $user->tenant_id
+                ], [
+                    'name' => $categoryName,
+                    'tenant_id' => $user->tenant_id,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+
+                if ($category->wasRecentlyCreated) {
+                    $created[] = $categoryName;
+                } else {
+                    $existing[] = $categoryName;
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Catégories créées avec succès',
+                'created' => $created,
+                'existing' => $existing,
+                'tenant_id' => $user->tenant_id
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Erreur création catégories par défaut', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la création des catégories',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    });
+
     // Routes pour la gestion des ventes (pour AdminMagasin et Employe)
     Route::get('sales', [SaleController::class, 'index']);
     Route::get('sales/{sale}', [SaleController::class, 'show']);
