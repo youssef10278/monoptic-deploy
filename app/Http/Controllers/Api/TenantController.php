@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Models\ProductCategory;
 use App\Enums\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -99,6 +100,9 @@ class TenantController extends Controller
                 'role' => UserRole::AdminMagasin,
                 'tenant_id' => $tenant->id,
             ]);
+
+            // CRÉER AUTOMATIQUEMENT LES CATÉGORIES PAR DÉFAUT
+            $this->createDefaultCategories($tenant->id);
 
             DB::commit();
 
@@ -230,5 +234,33 @@ class TenantController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Créer des catégories par défaut pour un nouveau tenant
+     */
+    private function createDefaultCategories($tenantId)
+    {
+        $defaultCategories = [
+            'Montures',
+            'Accessoires'
+        ];
+
+        foreach ($defaultCategories as $categoryName) {
+            ProductCategory::firstOrCreate([
+                'name' => $categoryName,
+                'tenant_id' => $tenantId
+            ], [
+                'name' => $categoryName,
+                'tenant_id' => $tenantId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        \Log::info('TenantController - Catégories par défaut créées pour nouveau tenant', [
+            'tenant_id' => $tenantId,
+            'categories' => $defaultCategories
+        ]);
     }
 }

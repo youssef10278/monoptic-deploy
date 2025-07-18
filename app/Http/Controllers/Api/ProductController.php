@@ -27,6 +27,9 @@ class ProductController extends Controller
                 ], 403);
             }
 
+            // S'ASSURER QUE LES CATÉGORIES PAR DÉFAUT EXISTENT
+            $this->ensureDefaultCategoriesExist($user->tenant_id);
+
             $query = Product::where('tenant_id', $user->tenant_id)
                 ->with('productCategory');
 
@@ -410,27 +413,33 @@ class ProductController extends Controller
     }
 
     /**
-     * Créer des catégories par défaut pour un tenant
+     * S'assurer que les catégories par défaut existent pour un tenant
      */
-    private function createDefaultCategories($tenantId)
+    private function ensureDefaultCategoriesExist($tenantId)
     {
         $defaultCategories = [
             'Montures',
-            'Verres',
-            'Lentilles de contact',
             'Accessoires'
         ];
 
         foreach ($defaultCategories as $categoryName) {
-            ProductCategory::firstOrCreate([
-                'name' => $categoryName,
-                'tenant_id' => $tenantId
-            ]);
-        }
+            $exists = ProductCategory::where('tenant_id', $tenantId)
+                ->where('name', $categoryName)
+                ->exists();
 
-        \Log::info('ProductController - Catégories par défaut créées', [
-            'tenant_id' => $tenantId,
-            'categories' => $defaultCategories
-        ]);
+            if (!$exists) {
+                ProductCategory::create([
+                    'name' => $categoryName,
+                    'tenant_id' => $tenantId,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+
+                \Log::info('ProductController - Catégorie par défaut créée', [
+                    'tenant_id' => $tenantId,
+                    'category' => $categoryName
+                ]);
+            }
+        }
     }
 }
