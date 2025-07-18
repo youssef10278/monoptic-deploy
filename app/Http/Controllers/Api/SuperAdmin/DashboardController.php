@@ -63,7 +63,7 @@ class DashboardController extends Controller
             })->count();
 
             // Calculer le MRR (Monthly Recurring Revenue)
-            // Prix fixe de 300€ par tenant actif
+            // Prix fixe de 300 MAD par tenant actif
             $subscriptionPrice = 300;
             $mrr = $activeTenants * $subscriptionPrice;
 

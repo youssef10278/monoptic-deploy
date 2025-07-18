@@ -7,14 +7,16 @@ Le système d'impression POS de Monoptic permet d'imprimer des **tickets de vent
 ## 🎯 Fonctionnalités
 
 ### ✅ Types de Documents
-- **Ticket de Vente A4** - Document de vente finalisée
-- **Devis A4** - Proposition commerciale avec conditions
+
+-   **Ticket de Vente A4** - Document de vente finalisée
+-   **Devis A4** - Proposition commerciale avec conditions
 
 ### ✅ Options d'Impression
-- **Format** : A4 (21 x 29.7 cm) ou Ticket thermique (8cm)
-- **Orientation** : Portrait ou Paysage
-- **Copies** : 1 à 10 exemplaires
-- **Personnalisation** : Logo, détails produits, informations légales
+
+-   **Format** : A4 (21 x 29.7 cm) ou Ticket thermique (8cm)
+-   **Orientation** : Portrait ou Paysage
+-   **Copies** : 1 à 10 exemplaires
+-   **Personnalisation** : Logo, détails produits, informations légales
 
 ## 🚀 Utilisation
 
@@ -33,15 +35,17 @@ Dans l'interface POS, vous trouverez deux boutons d'impression :
 **Quand utiliser :** Avant finalisation de la vente, pour présenter une proposition au client.
 
 **Contenu inclus :**
-- Informations entreprise (logo, coordonnées)
-- Détails du devis (numéro, date, validité)
-- Informations client
-- Liste détaillée des articles avec prix HT
-- Totaux avec TVA (20%)
-- Conditions générales
-- Zones de signature (client + magasin)
+
+-   Informations entreprise (logo, coordonnées)
+-   Détails du devis (numéro, date, validité)
+-   Informations client
+-   Liste détaillée des articles avec prix HT
+-   Totaux avec TVA (20%)
+-   Conditions générales
+-   Zones de signature (client + magasin)
 
 **Processus :**
+
 1. Ajoutez les articles au panier
 2. Sélectionnez le client (optionnel)
 3. Cliquez sur "Imprimer Devis"
@@ -54,16 +58,18 @@ Dans l'interface POS, vous trouverez deux boutons d'impression :
 **Quand utiliser :** Après finalisation et paiement de la vente.
 
 **Contenu inclus :**
-- Informations entreprise
-- Numéro de ticket et date/heure
-- Informations vendeur et caisse
-- Détails client
-- Liste des articles avec quantités et prix
-- Total de la vente
-- Informations de paiement
-- Mentions légales et garantie
+
+-   Informations entreprise
+-   Numéro de ticket et date/heure
+-   Informations vendeur et caisse
+-   Détails client
+-   Liste des articles avec quantités et prix
+-   Total de la vente
+-   Informations de paiement
+-   Mentions légales et garantie
 
 **Processus :**
+
 1. Finalisez la vente (paiement complet ou partiel)
 2. Le système propose automatiquement l'impression
 3. Ou cliquez manuellement sur "Imprimer Ticket"
@@ -128,10 +134,10 @@ RC: RC 123456 | ICE: ICE 901234567890123
 │ ─────────────────────────────────── │
 │ Article         Qté  P.U.   Total   │
 │ ─────────────────────────────────── │
-│ Monture Ray-Ban  1   180€   180€    │
-│ Verres progressifs 1  250€   250€   │
+│ Monture Ray-Ban  1   180MAD 180MAD  │
+│ Verres progressifs 1  250MAD 250MAD │
 │ ─────────────────────────────────── │
-│                    TOTAL:    430€   │
+│                    TOTAL:    430MAD │
 │                                     │
 │ Paiement: Carte bancaire            │
 │ Montant payé: 430,00 MAD           │
@@ -161,12 +167,12 @@ RC: RC 123456 | ICE: ICE 901234567890123
 │ ─────────────────────────────────── │
 │ Désignation    Qté  P.U.HT  Total  │
 │ ─────────────────────────────────── │
-│ Monture...      1   150€    150€   │
-│ Verres...       1   200€    200€   │
+│ Monture...      1   150MAD  150MAD │
+│ Verres...       1   200MAD  200MAD │
 │ ─────────────────────────────────── │
-│ Sous-total HT:           350,00€   │
-│ TVA (20%):                70,00€   │
-│ TOTAL TTC:               420,00€   │
+│ Sous-total HT:           350,00MAD │
+│ TVA (20%):                70,00MAD │
+│ TOTAL TTC:               420,00MAD │
 │                                     │
 │ CONDITIONS GÉNÉRALES:               │
 │ • Devis valable 30 jours           │
@@ -188,14 +194,14 @@ RC: RC 123456 | ICE: ICE 901234567890123
 
 ```javascript
 // Composant principal
-PrintModal.vue
+PrintModal.vue;
 
 // Templates d'impression
-PrintTemplates.js
+PrintTemplates.js;
 
 // Utilitaires
-currency.js  // Formatage des prix
-date.js      // Formatage des dates
+currency.js; // Formatage des prix
+date.js; // Formatage des dates
 ```
 
 ### Workflow d'Impression
@@ -259,14 +265,14 @@ date.js      // Formatage des dates
 
 ```javascript
 export const COMPANY_CONFIG = {
-  name: 'VOTRE_ENTREPRISE',
-  slogan: 'Votre slogan',
-  address: {
-    street: 'Votre adresse',
-    city: 'Votre ville',
-    // ...
-  }
-}
+    name: "VOTRE_ENTREPRISE",
+    slogan: "Votre slogan",
+    address: {
+        street: "Votre adresse",
+        city: "Votre ville",
+        // ...
+    },
+};
 ```
 
 ### Ajouter un Logo
@@ -283,18 +289,21 @@ Modifiez les fonctions `getTicketStyles()` et `getDevisStyles()` dans `PrintTemp
 ### Problèmes Courants
 
 **L'impression ne fonctionne pas :**
-- Vérifiez que les pop-ups sont autorisées
-- Testez avec un autre navigateur
-- Vérifiez la connexion de l'imprimante
+
+-   Vérifiez que les pop-ups sont autorisées
+-   Testez avec un autre navigateur
+-   Vérifiez la connexion de l'imprimante
 
 **Le formatage est incorrect :**
-- Vérifiez les paramètres d'impression du navigateur
-- Utilisez "Imprimer en arrière-plan" désactivé
-- Sélectionnez le bon format de papier (A4)
+
+-   Vérifiez les paramètres d'impression du navigateur
+-   Utilisez "Imprimer en arrière-plan" désactivé
+-   Sélectionnez le bon format de papier (A4)
 
 **Les données ne s'affichent pas :**
-- Vérifiez que la vente est finalisée (pour les tickets)
-- Vérifiez que le panier contient des articles (pour les devis)
+
+-   Vérifiez que la vente est finalisée (pour les tickets)
+-   Vérifiez que le panier contient des articles (pour les devis)
 
 ### Support
 
