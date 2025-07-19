@@ -15,23 +15,41 @@
         @vite(['resources/js/app.js'])
 
         <script>
-            // Fix double protocol in asset URLs
+            // DEBUG: Log toutes les URLs générées
+            console.log('=== DEBUG URLS ===');
+            console.log('Current URL:', window.location.href);
+            console.log('Base URL:', window.location.origin);
+
+            // Fix double protocol in asset URLs - VERSION AMÉLIORÉE
             document.addEventListener('DOMContentLoaded', function() {
-                const links = document.querySelectorAll('link[href*="https//"]');
+                console.log('=== FIXING URLS ===');
+
+                // Fix links
+                const links = document.querySelectorAll('link[href]');
                 links.forEach(link => {
-                    link.href = link.href.replace('https//monoptic-deploy-production.up.railway.app', 'https://monoptic-deploy-production.up.railway.app');
+                    const originalHref = link.href;
+                    if (originalHref.includes('https//')) {
+                        link.href = originalHref.replace(/https\/\//g, 'https://');
+                        console.log('Fixed link:', originalHref, '->', link.href);
+                    }
                 });
 
-                const scripts = document.querySelectorAll('script[src*="https//"]');
+                // Fix scripts
+                const scripts = document.querySelectorAll('script[src]');
                 scripts.forEach(script => {
-                    const newSrc = script.src.replace('https//monoptic-deploy-production.up.railway.app', 'https://monoptic-deploy-production.up.railway.app');
-                    if (newSrc !== script.src) {
+                    const originalSrc = script.src;
+                    if (originalSrc.includes('https//')) {
+                        const newSrc = originalSrc.replace(/https\/\//g, 'https://');
+                        console.log('Fixed script:', originalSrc, '->', newSrc);
+
                         const newScript = document.createElement('script');
                         newScript.src = newSrc;
-                        newScript.type = script.type;
+                        newScript.type = script.type || 'text/javascript';
                         script.parentNode.replaceChild(newScript, script);
                     }
                 });
+
+                console.log('=== URL FIXING COMPLETE ===');
             });
         </script>
     </head>
