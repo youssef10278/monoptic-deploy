@@ -68,7 +68,7 @@ Route::get('/', [App\Http\Controllers\LandingController::class, 'index'])->name(
 Route::get('/demo', [App\Http\Controllers\LandingController::class, 'requestDemo'])->name('demo.request');
 Route::post('/contact', [App\Http\Controllers\LandingController::class, 'contact'])->name('contact');
 
-// Route pour l'application - Interface Monoptic
+// Route pour l'application - Interface Monopti
 Route::get('/app', function () {
     return view('app');
 })->name('app');

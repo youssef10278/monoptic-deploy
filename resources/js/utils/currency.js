@@ -1,6 +1,6 @@
 /**
  * Utilitaires pour le formatage des devises
- * Application MonOptic - Maroc
+ * Application MonOpti - Maroc
  */
 
 /**

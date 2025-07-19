@@ -2,7 +2,7 @@
 
 ## ✅ **Problème Résolu**
 
-**Avant :** L'en-tête des documents d'impression affichait les informations génériques de "MONOPTIC" au lieu des informations personnalisées de chaque opticien.
+**Avant :** L'en-tête des documents d'impression affichait les informations génériques de "MONOPTI" au lieu des informations personnalisées de chaque opticien.
 
 **Maintenant :** Chaque opticien peut configurer ses propres informations qui apparaîtront sur tous ses documents d'impression.
 
@@ -11,24 +11,27 @@
 ### **1. Système de Configuration Personnalisée**
 
 #### **Informations Configurables :**
-- ✅ **Nom de l'optique** (obligatoire)
-- ✅ **Slogan** (optionnel)
-- ✅ **Adresse complète** (rue, ville, code postal)
-- ✅ **Coordonnées** (téléphone, email, site web)
-- ✅ **Informations légales** (RC, ICE, Patente, CNSS)
-- ✅ **Logo** (upload d'image - à implémenter)
-- ✅ **Options d'affichage** (slogan, site web, infos légales)
+
+-   ✅ **Nom de l'optique** (obligatoire)
+-   ✅ **Slogan** (optionnel)
+-   ✅ **Adresse complète** (rue, ville, code postal)
+-   ✅ **Coordonnées** (téléphone, email, site web)
+-   ✅ **Informations légales** (RC, ICE, Patente, CNSS)
+-   ✅ **Logo** (upload d'image - à implémenter)
+-   ✅ **Options d'affichage** (slogan, site web, infos légales)
 
 #### **Validation Automatique :**
-- ✅ Nom de l'optique obligatoire
-- ✅ Téléphone obligatoire
-- ✅ Adresse obligatoire
-- ✅ Format email valide
-- ✅ Format téléphone marocain valide
+
+-   ✅ Nom de l'optique obligatoire
+-   ✅ Téléphone obligatoire
+-   ✅ Adresse obligatoire
+-   ✅ Format email valide
+-   ✅ Format téléphone marocain valide
 
 ### **2. Page de Configuration**
 
 #### **Accès :**
+
 ```
 Menu utilisateur → "Configuration Optique"
 ou
@@ -36,39 +39,43 @@ URL directe : /settings/optician
 ```
 
 #### **Interface :**
-- ✅ **Formulaire organisé** en sections logiques
-- ✅ **Aperçu en temps réel** de l'en-tête
-- ✅ **Validation en temps réel** des champs
-- ✅ **Sauvegarde locale et serveur** (avec fallback)
-- ✅ **Réinitialisation** aux valeurs par défaut
+
+-   ✅ **Formulaire organisé** en sections logiques
+-   ✅ **Aperçu en temps réel** de l'en-tête
+-   ✅ **Validation en temps réel** des champs
+-   ✅ **Sauvegarde locale et serveur** (avec fallback)
+-   ✅ **Réinitialisation** aux valeurs par défaut
 
 ### **3. Intégration dans les Documents**
 
 #### **Documents Concernés :**
-- ✅ **Tickets de vente** (A4 et thermique)
-- ✅ **Devis** (A4 avec en-tête complet)
-- ✅ **Reçus** (format compact)
+
+-   ✅ **Tickets de vente** (A4 et thermique)
+-   ✅ **Devis** (A4 avec en-tête complet)
+-   ✅ **Reçus** (format compact)
 
 #### **Affichage Adaptatif :**
-- ✅ **Logo** (si uploadé)
-- ✅ **Nom de l'optique** (toujours affiché)
-- ✅ **Slogan** (si activé dans les options)
-- ✅ **Adresse complète** (formatée automatiquement)
-- ✅ **Coordonnées** (téléphone formaté, email)
-- ✅ **Site web** (si activé et renseigné)
-- ✅ **Infos légales** (RC, ICE si activées)
+
+-   ✅ **Logo** (si uploadé)
+-   ✅ **Nom de l'optique** (toujours affiché)
+-   ✅ **Slogan** (si activé dans les options)
+-   ✅ **Adresse complète** (formatée automatiquement)
+-   ✅ **Coordonnées** (téléphone formaté, email)
+-   ✅ **Site web** (si activé et renseigné)
+-   ✅ **Infos légales** (RC, ICE si activées)
 
 ## 📋 **Guide d'Utilisation**
 
 ### **Étape 1 : Accéder à la Configuration**
 
-1. **Connectez-vous** à votre interface Monoptic
+1. **Connectez-vous** à votre interface Monopti
 2. **Cliquez sur votre avatar** en haut à droite
 3. **Sélectionnez "Configuration Optique"**
 
 ### **Étape 2 : Remplir les Informations de Base**
 
 #### **Champs Obligatoires :**
+
 ```
 ✅ Nom de l'optique : "Optique Vision Plus"
 ✅ Téléphone : "+212 6XX XX XX XX"
@@ -77,6 +84,7 @@ URL directe : /settings/optician
 ```
 
 #### **Champs Optionnels :**
+
 ```
 • Slogan : "Votre Vision, Notre Passion"
 • Code postal : "20000"
@@ -96,9 +104,10 @@ URL directe : /settings/optician
 ### **Étape 4 : Personnaliser l'Affichage**
 
 #### **Options Disponibles :**
-- ☑️ **Afficher le slogan** sur les documents
-- ☑️ **Afficher le site web** sur les documents
-- ☑️ **Afficher les informations légales** (RC, ICE)
+
+-   ☑️ **Afficher le slogan** sur les documents
+-   ☑️ **Afficher le site web** sur les documents
+-   ☑️ **Afficher les informations légales** (RC, ICE)
 
 ### **Étape 5 : Prévisualiser et Sauvegarder**
 
@@ -110,6 +119,7 @@ URL directe : /settings/optician
 ## 🎨 **Exemples d'En-têtes Personnalisés**
 
 ### **Exemple 1 : Optique Moderne**
+
 ```
 ┌─────────────────────────────────────────┐
 │  [LOGO]  OPTIQUE VISION PLUS            │
@@ -125,6 +135,7 @@ URL directe : /settings/optician
 ```
 
 ### **Exemple 2 : Optique Classique**
+
 ```
 ┌─────────────────────────────────────────┐
 │         OPTIQUE AL BASAR                │
@@ -136,6 +147,7 @@ URL directe : /settings/optician
 ```
 
 ### **Exemple 3 : Optique Compacte**
+
 ```
 ┌─────────────────────────────────────────┐
 │  OPTIQUE NOUR - Votre Opticien de Confiance │
@@ -147,6 +159,7 @@ URL directe : /settings/optician
 ## 🔧 **Fonctionnalités Techniques**
 
 ### **Sauvegarde des Données**
+
 ```javascript
 // Sauvegarde automatique
 - Serveur (API) : Priorité 1
@@ -155,6 +168,7 @@ URL directe : /settings/optician
 ```
 
 ### **Validation des Formats**
+
 ```javascript
 // Téléphone marocain
 Formats acceptés : +212XXXXXXXXX, 0XXXXXXXXX, 212XXXXXXXXX
@@ -167,6 +181,7 @@ Validation en temps réel avec messages d'erreur
 ```
 
 ### **Gestion des Erreurs**
+
 ```javascript
 // Cas gérés
 - Perte de connexion → Sauvegarde locale
@@ -177,6 +192,7 @@ Validation en temps réel avec messages d'erreur
 ## 📱 **Impact sur les Documents**
 
 ### **Avant la Configuration**
+
 ```
 En-tête générique :
 ┌─────────────────────────────────────────┐
@@ -188,6 +204,7 @@ En-tête générique :
 ```
 
 ### **Après la Configuration**
+
 ```
 En-tête personnalisé :
 ┌─────────────────────────────────────────┐
@@ -202,46 +219,53 @@ En-tête personnalisé :
 ## ✅ **Avantages pour l'Opticien**
 
 ### **Professionnalisme**
-- ✅ **Documents personnalisés** avec identité visuelle
-- ✅ **Informations légales** conformes
-- ✅ **Coordonnées exactes** pour contact client
+
+-   ✅ **Documents personnalisés** avec identité visuelle
+-   ✅ **Informations légales** conformes
+-   ✅ **Coordonnées exactes** pour contact client
 
 ### **Conformité**
-- ✅ **RC et ICE** affichés selon réglementation
-- ✅ **Adresse officielle** sur tous documents
-- ✅ **Informations à jour** automatiquement
+
+-   ✅ **RC et ICE** affichés selon réglementation
+-   ✅ **Adresse officielle** sur tous documents
+-   ✅ **Informations à jour** automatiquement
 
 ### **Marketing**
-- ✅ **Slogan** pour renforcer l'image de marque
-- ✅ **Site web** pour diriger vers boutique en ligne
-- ✅ **Présentation professionnelle** qui inspire confiance
+
+-   ✅ **Slogan** pour renforcer l'image de marque
+-   ✅ **Site web** pour diriger vers boutique en ligne
+-   ✅ **Présentation professionnelle** qui inspire confiance
 
 ## 🚀 **Prochaines Améliorations**
 
 ### **Fonctionnalités à Venir**
-- 📸 **Upload de logo** (images PNG, JPG)
-- 🎨 **Thèmes d'en-tête** (couleurs, polices)
-- 📄 **Templates personnalisés** par type de document
-- 🌐 **Multi-langues** (français, arabe)
-- 📊 **Statistiques d'utilisation** des documents
+
+-   📸 **Upload de logo** (images PNG, JPG)
+-   🎨 **Thèmes d'en-tête** (couleurs, polices)
+-   📄 **Templates personnalisés** par type de document
+-   🌐 **Multi-langues** (français, arabe)
+-   📊 **Statistiques d'utilisation** des documents
 
 ### **Intégrations Futures**
-- 🔗 **API externe** pour validation RC/ICE
-- 📱 **QR Code** avec coordonnées
-- 💳 **Informations bancaires** pour paiements
-- 📧 **Signature email** automatique
+
+-   🔗 **API externe** pour validation RC/ICE
+-   📱 **QR Code** avec coordonnées
+-   💳 **Informations bancaires** pour paiements
+-   📧 **Signature email** automatique
 
 ## 📞 **Support**
 
 ### **En Cas de Problème**
+
 1. **Vérifiez** que tous les champs obligatoires sont remplis
 2. **Testez** avec un document d'impression
 3. **Contactez le support** si problème persistant
 
 ### **Conseils d'Utilisation**
-- ✅ **Mettez à jour** régulièrement vos informations
-- ✅ **Testez** l'aperçu avant impression
-- ✅ **Sauvegardez** après chaque modification
-- ✅ **Vérifiez** la conformité des informations légales
+
+-   ✅ **Mettez à jour** régulièrement vos informations
+-   ✅ **Testez** l'aperçu avant impression
+-   ✅ **Sauvegardez** après chaque modification
+-   ✅ **Vérifiez** la conformité des informations légales
 
 **Votre optique a maintenant une identité unique sur tous ses documents !** 🎉

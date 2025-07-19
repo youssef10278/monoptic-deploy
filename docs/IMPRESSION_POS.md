@@ -2,7 +2,7 @@
 
 ## Vue d'Ensemble
 
-Le système d'impression POS de Monoptic permet d'imprimer des **tickets de vente** et des **devis** au format A4 professionnel directement depuis l'interface de vente.
+Le système d'impression POS de Monopti permet d'imprimer des **tickets de vente** et des **devis** au format A4 professionnel directement depuis l'interface de vente.
 
 ## 🎯 Fonctionnalités
 
@@ -100,15 +100,15 @@ Dans l'interface POS, vous trouverez deux boutons d'impression :
 Les informations suivantes sont automatiquement incluses :
 
 ```javascript
-MONOPTIC
+MONOPTI
 Votre Opticien de Confiance
 
 123 Avenue Mohammed V
 Casablanca 20000, Maroc
 
 Tél: +212 522 123 456
-Email: contact@monoptic.ma
-Web: www.monoptic.ma
+Email: contact@monopti.ma
+Web: www.monopti.ma
 
 RC: RC 123456 | ICE: ICE 901234567890123
 ```
@@ -119,7 +119,7 @@ RC: RC 123456 | ICE: ICE 901234567890123
 
 ```
 ┌─────────────────────────────────────┐
-│            MONOPTIC                 │
+│            MONOPTI                 │
 │     Votre Opticien de Confiance     │
 │                                     │
 │        TICKET DE VENTE              │
@@ -151,7 +151,7 @@ RC: RC 123456 | ICE: ICE 901234567890123
 
 ```
 ┌─────────────────────────────────────┐
-│            MONOPTIC                 │
+│            MONOPTI                 │
 │     Votre Opticien de Confiance     │
 │                                     │
 │              DEVIS                  │
@@ -184,7 +184,7 @@ RC: RC 123456 | ICE: ICE 901234567890123
 │ │             │    │             │  │
 │ │             │    │             │  │
 │ └─────────────┘    └─────────────┘  │
-│ Bon pour accord         MONOPTIC    │
+│ Bon pour accord         MONOPTI    │
 └─────────────────────────────────────┘
 ```
 
@@ -307,10 +307,10 @@ Modifiez les fonctions `getTicketStyles()` et `getDevisStyles()` dans `PrintTemp
 
 ### Support
 
-Pour toute assistance technique, contactez l'équipe de développement Monoptic.
+Pour toute assistance technique, contactez l'équipe de développement Monopti.
 
 ---
 
 **Version :** 1.0  
 **Dernière mise à jour :** Janvier 2024  
-**Auteur :** Équipe Monoptic
+**Auteur :** Équipe Monopti

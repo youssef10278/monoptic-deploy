@@ -9,7 +9,7 @@
                             Tableau de Bord Super Administrateur
                         </h1>
                         <p class="text-gray-600">
-                            Vue d'ensemble de la plateforme MonOptic
+                            Vue d'ensemble de la plateforme MonOpti
                         </p>
                     </div>
                     <div class="flex space-x-2">
@@ -616,9 +616,7 @@
                                             {{ tenant.name }}
                                         </div>
                                         <div class="text-sm text-gray-500">
-                                            {{
-                                                tenant.users_count
-                                            }}
+                                            {{ tenant.users_count }}
                                             utilisateur(s) •
                                             {{ tenant.clients_count }} client(s)
                                         </div>
@@ -649,9 +647,7 @@
                                             {{ tenant.sales_count }} vente(s)
                                         </div>
                                         <div>
-                                            {{
-                                                tenant.products_count
-                                            }}
+                                            {{ tenant.products_count }}
                                             produit(s)
                                         </div>
                                     </div>
