@@ -40,10 +40,6 @@
                         </svg>
                         Monture
                     </button>
-                    <p v-if="!frameCategory" class="text-xs text-red-500 mt-2">
-                        Pour ajouter une monture, vous devez d'abord créer une
-                        catégorie de produits nommée "Montures".
-                    </p>
 
                     <!-- Bouton Ajouter un accessoire -->
                     <button
