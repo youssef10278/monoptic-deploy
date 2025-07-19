@@ -17,4 +17,4 @@ php artisan route:cache
 php artisan view:cache
 
 echo "✅ Railway configuration complete!"
-echo "🌐 App should be available at: https://monoptic-deploy-production.up.railway.app"
+echo "🌐 App should be available at: https://monopti-deploy-production.up.railway.app"

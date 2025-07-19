@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "=== MONOPTIC MINIMAL START ==="
+echo "=== MONOPTI MINIMAL START ==="
 
 # Configuration Railway
 export PORT=${PORT:-80}
@@ -13,7 +13,7 @@ echo "Environment: $APP_ENV"
 
 # Créer .env minimal avec HTTPS forcé
 cat > .env << EOF
-APP_NAME=Monoptic
+APP_NAME=Monopti
 APP_ENV=${APP_ENV}
 APP_DEBUG=${APP_DEBUG}
 APP_KEY=${APP_KEY}

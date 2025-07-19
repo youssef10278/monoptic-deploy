@@ -106,8 +106,8 @@ LOG_LEVEL=error
 
 # Mail
 MAIL_MAILER=log
-MAIL_FROM_ADDRESS=noreply@monoptic.com
-MAIL_FROM_NAME=Monoptic
+MAIL_FROM_ADDRESS=noreply@monopti.com
+MAIL_FROM_NAME=Monopti
 ```
 
 ## Commandes Post-Déploiement
@@ -142,24 +142,27 @@ railway run php artisan db:seed --class=ProductionSeeder
 
 Après le seeding :
 
-- **Super Admin** : admin@monoptic.com / password123
-- **Admin Magasin** : admin@optiquevision.ma / password123
-- **Employé** : employe@optiquevision.ma / password123
+-   **Super Admin** : admin@monoptic.com / password123
+-   **Admin Magasin** : admin@optiquevision.ma / password123
+-   **Employé** : employe@optiquevision.ma / password123
 
 ## Dépannage
 
 ### Erreur de Migration
+
 ```bash
 railway run php artisan migrate:fresh --seed
 ```
 
 ### Erreur de Cache
+
 ```bash
 railway run php artisan cache:clear
 railway run php artisan config:clear
 ```
 
 ### Erreur de Permissions
+
 Vérifiez que les dossiers storage/ et bootstrap/cache/ sont accessibles en écriture.
 
 ## Monitoring
@@ -182,6 +185,6 @@ Railway redéploiera automatiquement.
 
 ## Support
 
-- **Documentation Railway** : [docs.railway.app](https://docs.railway.app)
-- **Logs d'erreur** : Consultez les logs Railway pour diagnostiquer
-- **Base de données** : Utilisez l'interface Railway pour inspecter PostgreSQL
+-   **Documentation Railway** : [docs.railway.app](https://docs.railway.app)
+-   **Logs d'erreur** : Consultez les logs Railway pour diagnostiquer
+-   **Base de données** : Utilisez l'interface Railway pour inspecter PostgreSQL

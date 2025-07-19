@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "=== MONOPTIC RAILWAY DEPLOYMENT ==="
+echo "=== MONOPTI RAILWAY DEPLOYMENT ==="
 
 # Configuration Railway
 export PORT=${PORT:-80}
@@ -14,7 +14,7 @@ echo "Database: ${DB_HOST}:${DB_PORT}/${DB_DATABASE}"
 
 # Créer .env pour Laravel
 cat > .env << EOF
-APP_NAME=Monoptic
+APP_NAME=Monopti
 APP_ENV=${APP_ENV}
 APP_DEBUG=${APP_DEBUG}
 APP_KEY=${APP_KEY}
@@ -83,7 +83,7 @@ php artisan view:cache
 echo "=== CREATING HEALTHCHECK ENDPOINTS ==="
 echo "OK" > public/health
 mkdir -p public/api
-echo '{"status":"ok","app":"monoptic","port":"'$PORT'"}' > public/api/health
+echo '{"status":"ok","app":"monopti","port":"'$PORT'"}' > public/api/health
 
 # Vérifier que les fichiers critiques existent
 echo "=== VERIFYING LARAVEL FILES ==="

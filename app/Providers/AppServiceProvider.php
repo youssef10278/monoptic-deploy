@@ -21,10 +21,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // TEMPORAIREMENT DÉSACTIVÉ POUR DEBUG
-        // if ($this->app->environment('production')) {
-        //     URL::forceScheme('https');
-        // }
+        // Configuration spécifique pour Railway
+        if ($this->app->environment('production')) {
+            // Forcer HTTPS mais sans forcer l'URL racine
+            URL::forceScheme('https');
+
+            // S'assurer que l'URL de base est correcte
+            $appUrl = config('app.url');
+            if ($appUrl && !str_contains($appUrl, 'https//')) {
+                // Seulement si l'URL est propre
+                URL::forceRootUrl($appUrl);
+            }
+        }
 
         Vite::prefetch(concurrency: 3);
     }

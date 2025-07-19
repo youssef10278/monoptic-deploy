@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "=== MONOPTIC SIMPLE START ==="
+echo "=== MONOPTI SIMPLE START ==="
 
 # Variables par défaut
 export APP_ENV=${APP_ENV:-production}
@@ -9,7 +9,7 @@ export DB_CONNECTION=${DB_CONNECTION:-pgsql}
 
 # Créer .env simple
 cat > .env << EOF
-APP_NAME=Monoptic
+APP_NAME=Monopti
 APP_ENV=${APP_ENV}
 APP_DEBUG=${APP_DEBUG}
 APP_KEY=${APP_KEY}

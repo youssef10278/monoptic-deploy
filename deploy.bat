@@ -1,5 +1,5 @@
 @echo off
-echo 🚀 Préparation du déploiement Monoptic sur Railway...
+echo 🚀 Préparation du déploiement Monopti sur Railway...
 
 REM Vérifier si nous sommes dans un repository git
 if not exist ".git" (
