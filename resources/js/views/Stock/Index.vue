@@ -38,8 +38,7 @@
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             ></path>
                         </svg>
-                        <span class="hidden sm:inline">Ajouter une </span
-                        >monture
+                        Monture
                     </button>
                     <p v-if="!frameCategory" class="text-xs text-red-500 mt-2">
                         Pour ajouter une monture, vous devez d'abord créer une
@@ -64,8 +63,7 @@
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             ></path>
                         </svg>
-                        <span class="hidden sm:inline">Ajouter un </span
-                        >accessoire
+                        Accessoire
                     </button>
                 </div>
             </div>
