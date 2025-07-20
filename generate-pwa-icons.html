@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Générateur d'icônes PWA Monoptic</title>
+</head>
+<body>
+    <h1>Générateur d'icônes PWA</h1>
+    <canvas id="canvas192" width="192" height="192" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <canvas id="canvas512" width="512" height="512" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <br>
+    <button onclick="downloadIcons()">Télécharger les icônes</button>
+
+    <script>
+        function createIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            
+            // Créer le gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#3B82F6');
+            gradient.addColorStop(1, '#1E40AF');
+            
+            // Fond avec coins arrondis
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.1);
+            ctx.fill();
+            
+            // Cercle (lunettes)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.beginPath();
+            ctx.arc(size * 0.5, size * 0.4, size * 0.125, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Rectangle (monture)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.beginPath();
+            ctx.roundRect(size * 0.33, size * 0.45, size * 0.33, size * 0.125, size * 0.025);
+            ctx.fill();
+            
+            // Lettre M
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.083}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('M', size * 0.5, size * 0.84);
+        }
+
+        // Polyfill pour roundRect si nécessaire
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.beginPath();
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+                this.closePath();
+            };
+        }
+
+        // Créer les icônes
+        createIcon(document.getElementById('canvas192'), 192);
+        createIcon(document.getElementById('canvas512'), 512);
+
+        function downloadIcons() {
+            // Télécharger 192x192
+            const canvas192 = document.getElementById('canvas192');
+            const link192 = document.createElement('a');
+            link192.download = 'pwa-192x192.png';
+            link192.href = canvas192.toDataURL('image/png');
+            link192.click();
+
+            // Télécharger 512x512
+            setTimeout(() => {
+                const canvas512 = document.getElementById('canvas512');
+                const link512 = document.createElement('a');
+                link512.download = 'pwa-512x512.png';
+                link512.href = canvas512.toDataURL('image/png');
+                link512.click();
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
