@@ -78,7 +78,12 @@ class ReportController extends Controller
             $averageSale = $totalSales > 0 ? $totalRevenue / $totalSales : 0;
 
             // Évolution par période adaptée aux nouveaux filtres
-            $salesEvolution = $this->getSalesEvolutionForReports($user->tenant_id, $startDate, $endDate, $period);
+            try {
+                $salesEvolution = $this->getSalesEvolutionForReports($user->tenant_id, $startDate, $endDate, $period);
+            } catch (\Exception $e) {
+                // En cas d'erreur, retourner un tableau vide
+                $salesEvolution = [];
+            }
 
             // Statistiques par période (aujourd'hui, cette semaine, ce mois)
             $today = Carbon::today();
@@ -232,7 +237,17 @@ class ReportController extends Controller
 
             // Top 5 produits les plus vendus (par quantité)
             $topSellingProducts = Product::where('products.tenant_id', $user->tenant_id)
-                ->select('products.*')
+                ->select([
+                    'products.id',
+                    'products.name',
+                    'products.price',
+                    'products.purchase_price',
+                    'products.stock_quantity',
+                    'products.product_category_id',
+                    'products.tenant_id',
+                    'products.created_at',
+                    'products.updated_at'
+                ])
                 ->selectRaw('SUM(sale_items.quantity) as total_sold')
                 ->selectRaw('SUM(sale_items.quantity * sale_items.price) as total_revenue')
                 ->selectRaw('AVG(sale_items.price) as average_price')
@@ -241,14 +256,34 @@ class ReportController extends Controller
                 ->where('sales.tenant_id', $user->tenant_id)
                 ->whereIn('sales.status', $confirmedStatuses)
                 ->with('productCategory')
-                ->groupBy('products.id', 'products.name', 'products.price', 'products.purchase_price', 'products.stock_quantity', 'products.product_category_id', 'products.tenant_id', 'products.created_at', 'products.updated_at')
+                ->groupBy([
+                    'products.id',
+                    'products.name',
+                    'products.price',
+                    'products.purchase_price',
+                    'products.stock_quantity',
+                    'products.product_category_id',
+                    'products.tenant_id',
+                    'products.created_at',
+                    'products.updated_at'
+                ])
                 ->orderByDesc('total_sold')
                 ->limit(5)
                 ->get();
 
             // Top 5 produits les plus rentables (par marge)
             $topProfitableProducts = Product::where('products.tenant_id', $user->tenant_id)
-                ->select('products.*')
+                ->select([
+                    'products.id',
+                    'products.name',
+                    'products.price',
+                    'products.purchase_price',
+                    'products.stock_quantity',
+                    'products.product_category_id',
+                    'products.tenant_id',
+                    'products.created_at',
+                    'products.updated_at'
+                ])
                 ->selectRaw('SUM(sale_items.quantity) as total_sold')
                 ->selectRaw('SUM(sale_items.quantity * (sale_items.price - COALESCE(products.purchase_price, 0))) as total_profit')
                 ->selectRaw('SUM(sale_items.quantity * sale_items.price) as total_revenue')
@@ -260,7 +295,17 @@ class ReportController extends Controller
                 ->whereNotNull('products.purchase_price')
                 ->where('products.purchase_price', '>', 0)
                 ->with('productCategory')
-                ->groupBy('products.id', 'products.name', 'products.price', 'products.purchase_price', 'products.stock_quantity', 'products.product_category_id', 'products.tenant_id', 'products.created_at', 'products.updated_at')
+                ->groupBy([
+                    'products.id',
+                    'products.name',
+                    'products.price',
+                    'products.purchase_price',
+                    'products.stock_quantity',
+                    'products.product_category_id',
+                    'products.tenant_id',
+                    'products.created_at',
+                    'products.updated_at'
+                ])
                 ->orderByDesc('total_profit')
                 ->limit(5)
                 ->get();
@@ -274,6 +319,7 @@ class ReportController extends Controller
             $lowStockProducts = Product::where('tenant_id', $user->tenant_id)
                 ->where('stock_quantity', '<=', 5)
                 ->where('stock_quantity', '>', 0)
+                ->with('productCategory')
                 ->orderBy('stock_quantity', 'asc')
                 ->limit(5)
                 ->get();
@@ -281,6 +327,7 @@ class ReportController extends Controller
             // Produits sans stock
             $outOfStockProducts = Product::where('tenant_id', $user->tenant_id)
                 ->where('stock_quantity', '<=', 0)
+                ->with('productCategory')
                 ->limit(5)
                 ->get();
 
@@ -329,12 +376,12 @@ class ReportController extends Controller
             // Calculer la valeur du stock au prix d'achat
             $purchaseValue = Product::where('tenant_id', $user->tenant_id)
                 ->whereNotNull('purchase_price')
-                ->selectRaw('SUM(quantity * purchase_price) as total')
+                ->selectRaw('SUM(stock_quantity * purchase_price) as total')
                 ->value('total') ?? 0;
 
             // Calculer la valeur du stock au prix de vente
             $sellingValue = Product::where('tenant_id', $user->tenant_id)
-                ->selectRaw('SUM(quantity * selling_price) as total')
+                ->selectRaw('SUM(stock_quantity * price) as total')
                 ->value('total') ?? 0;
 
             // Calculer la marge potentielle
@@ -342,9 +389,9 @@ class ReportController extends Controller
 
             // Statistiques supplémentaires
             $totalProducts = Product::where('tenant_id', $user->tenant_id)->count();
-            $totalQuantity = Product::where('tenant_id', $user->tenant_id)->sum('quantity');
+            $totalQuantity = Product::where('tenant_id', $user->tenant_id)->sum('stock_quantity');
             $lowStockProducts = Product::where('tenant_id', $user->tenant_id)
-                ->where('quantity', '<=', 5)
+                ->where('stock_quantity', '<=', 5)
                 ->count();
 
             return response()->json([
