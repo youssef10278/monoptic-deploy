@@ -1,5 +1,9 @@
 <template>
     <div class="min-h-screen bg-gray-100">
+        <!-- Composants PWA -->
+        <PWAStatus />
+        <InstallButton />
+
         <!-- Sidebar -->
         <div
             class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out"
@@ -537,6 +541,8 @@
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import PWAStatus from "../Components/PWA/PWAStatus.vue";
+import InstallButton from "../Components/PWA/InstallButton.vue";
 
 const router = useRouter();
 

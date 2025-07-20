@@ -7,6 +7,18 @@
 
         <title>{{ config('app.name', 'Monopti') }}</title>
 
+        <!-- PWA Meta Tags -->
+        <meta name="theme-color" content="#3B82F6">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="Monoptic">
+        <meta name="description" content="Application de gestion pour magasins d'optique">
+
+        <!-- PWA Icons -->
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="apple-touch-icon" href="/pwa-192x192.png">
+        <link rel="mask-icon" href="/pwa-192x192.png" color="#3B82F6">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
