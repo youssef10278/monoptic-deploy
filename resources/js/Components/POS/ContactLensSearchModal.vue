@@ -988,8 +988,10 @@ const copyODtoOG = () => {
 const formatPrice = (price) => {
     return new Intl.NumberFormat("fr-FR", {
         style: "currency",
-        currency: "EUR",
-    }).format(price);
+        currency: "MAD",
+    })
+        .format(price)
+        .replace("€", "MAD");
 };
 
 const addToCart = () => {

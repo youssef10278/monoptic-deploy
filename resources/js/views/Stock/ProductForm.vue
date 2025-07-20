@@ -142,7 +142,7 @@
                                             for="purchase_price"
                                             class="block text-sm font-medium text-gray-700"
                                         >
-                                            Prix d'achat (€)
+                                            Prix d'achat (MAD)
                                         </label>
                                         <input
                                             id="purchase_price"
