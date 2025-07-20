@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\DashboardController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Hash;
 
 // Routes publiques (sans authentification)
 Route::post('/login', [LoginController::class, 'login']);
@@ -43,6 +44,36 @@ Route::middleware(['auth:sanctum'])->group(function () {
                     ] : null,
                 ],
             ]
+        ]);
+    });
+
+    // Route pour changer le mot de passe
+    Route::put('/user/password', function (Request $request) {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        // Vérifier le mot de passe actuel
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Le mot de passe actuel est incorrect',
+                'errors' => [
+                    'current_password' => ['Le mot de passe actuel est incorrect']
+                ]
+            ], 422);
+        }
+
+        // Mettre à jour le mot de passe
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Mot de passe changé avec succès'
         ]);
     });
 

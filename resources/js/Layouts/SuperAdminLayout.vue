@@ -238,6 +238,13 @@
                                     >
                                         Paramètres
                                     </a>
+                                    <a
+                                        href="#"
+                                        @click.prevent="openChangePasswordModal"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    >
+                                        Changer le mot de passe
+                                    </a>
                                     <div class="border-t border-gray-100"></div>
                                     <button
                                         @click="handleLogout"
