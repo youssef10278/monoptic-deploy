@@ -311,11 +311,27 @@
             <!-- Top 5 Ventes -->
             <div class="bg-white shadow rounded-lg">
                 <div class="px-4 py-5 sm:p-6">
-                    <h3
-                        class="text-lg leading-6 font-medium text-gray-900 mb-4"
-                    >
-                        Top 5 - Produits les plus vendus
-                    </h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            Top 5 - Produits les plus vendus
+                        </h3>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <svg
+                                class="h-4 w-4 mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                                ></path>
+                            </svg>
+                            Par quantité
+                        </div>
+                    </div>
                     <div
                         v-if="isLoadingProducts"
                         class="flex justify-center py-8"
@@ -347,39 +363,74 @@
                         <div
                             v-for="(product, index) in productData.top_selling"
                             :key="product.id"
-                            class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                            class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-white rounded-lg border border-blue-100 hover:shadow-md transition-shadow duration-200"
                         >
-                            <div class="flex items-center space-x-3">
+                            <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
                                     <span
-                                        class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-800 text-sm font-medium"
+                                        class="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold"
+                                        :class="getTopSellingRankClass(index)"
                                     >
                                         {{ index + 1 }}
                                     </span>
                                 </div>
-                                <div>
-                                    <div
-                                        class="text-sm font-medium text-gray-900"
-                                    >
-                                        {{ product.name }}
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center space-x-2">
+                                        <p
+                                            class="text-sm font-medium text-gray-900 truncate"
+                                        >
+                                            {{ product.name }}
+                                        </p>
+                                        <span
+                                            v-if="product.stock_quantity <= 5"
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+                                        >
+                                            Stock faible
+                                        </span>
                                     </div>
-                                    <div class="text-sm text-gray-500">
-                                        {{ product.product_category?.name }}
+                                    <div
+                                        class="flex items-center space-x-4 mt-1"
+                                    >
+                                        <p class="text-xs text-gray-500">
+                                            {{
+                                                product.product_category
+                                                    ?.name || "Sans catégorie"
+                                            }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">
+                                            Stock: {{ product.stock_quantity }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <div class="text-sm font-medium text-gray-900">
-                                    {{ product.total_sold }} vendus
+                            <div class="flex-shrink-0 text-right">
+                                <div
+                                    class="text-lg font-semibold text-blue-600"
+                                >
+                                    {{ product.total_sold }}
                                 </div>
-                                <div class="text-sm text-gray-500">
+                                <div class="text-xs text-gray-500">vendus</div>
+                                <div class="text-xs text-gray-600 mt-1">
                                     {{ formatPrice(product.total_revenue) }}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div v-else class="text-center py-8 text-gray-500">
-                        Aucune vente enregistrée
+                        <svg
+                            class="mx-auto h-12 w-12 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                            ></path>
+                        </svg>
+                        <p class="mt-2 text-sm">Aucune vente enregistrée</p>
                     </div>
                 </div>
             </div>
@@ -387,11 +438,27 @@
             <!-- Top 5 Rentabilité -->
             <div class="bg-white shadow rounded-lg">
                 <div class="px-4 py-5 sm:p-6">
-                    <h3
-                        class="text-lg leading-6 font-medium text-gray-900 mb-4"
-                    >
-                        Top 5 - Produits les plus rentables
-                    </h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            Top 5 - Produits les plus rentables
+                        </h3>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <svg
+                                class="h-4 w-4 mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                                ></path>
+                            </svg>
+                            Par marge
+                        </div>
+                    </div>
                     <div
                         v-if="isLoadingProducts"
                         class="flex justify-center py-8"
@@ -425,39 +492,85 @@
                                 product, index
                             ) in productData.top_profitable"
                             :key="product.id"
-                            class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                            class="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-white rounded-lg border border-green-100 hover:shadow-md transition-shadow duration-200"
                         >
-                            <div class="flex items-center space-x-3">
+                            <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
                                     <span
-                                        class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-100 text-green-800 text-sm font-medium"
+                                        class="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-bold"
+                                        :class="
+                                            getTopProfitableRankClass(index)
+                                        "
                                     >
                                         {{ index + 1 }}
                                     </span>
                                 </div>
-                                <div>
-                                    <div
-                                        class="text-sm font-medium text-gray-900"
-                                    >
-                                        {{ product.name }}
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center space-x-2">
+                                        <p
+                                            class="text-sm font-medium text-gray-900 truncate"
+                                        >
+                                            {{ product.name }}
+                                        </p>
+                                        <span
+                                            v-if="product.stock_quantity <= 5"
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+                                        >
+                                            Stock faible
+                                        </span>
                                     </div>
-                                    <div class="text-sm text-gray-500">
-                                        {{ product.product_category?.name }}
+                                    <div
+                                        class="flex items-center space-x-4 mt-1"
+                                    >
+                                        <p class="text-xs text-gray-500">
+                                            {{
+                                                product.product_category
+                                                    ?.name || "Sans catégorie"
+                                            }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">
+                                            {{ product.total_sold }} vendus
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <div class="text-sm font-medium text-green-600">
+                            <div class="flex-shrink-0 text-right">
+                                <div
+                                    class="text-lg font-semibold text-green-600"
+                                >
                                     {{ formatPrice(product.total_profit) }}
                                 </div>
-                                <div class="text-sm text-gray-500">
-                                    {{ product.total_sold }} vendus
+                                <div class="text-xs text-gray-500">
+                                    profit total
+                                </div>
+                                <div class="text-xs text-gray-600 mt-1">
+                                    {{
+                                        formatPrice(
+                                            product.average_profit_per_unit || 0
+                                        )
+                                    }}/unité
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div v-else class="text-center py-8 text-gray-500">
-                        Aucune donnée de rentabilité disponible
+                        <svg
+                            class="mx-auto h-12 w-12 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                            ></path>
+                        </svg>
+                        <p class="mt-2 text-sm">Aucune donnée de rentabilité</p>
+                        <p class="text-xs text-gray-400">
+                            Vérifiez les prix d'achat des produits
+                        </p>
                     </div>
                 </div>
             </div>
@@ -471,32 +584,14 @@
                 :is-loading="isLoadingTopClients"
             />
 
-            <!-- Placeholder pour un futur widget (analyses financières) -->
-            <div class="bg-white shadow rounded-lg">
-                <div class="px-4 py-5 sm:p-6">
-                    <h3
-                        class="text-lg leading-6 font-medium text-gray-900 mb-4"
-                    >
-                        Analyses Financières
-                    </h3>
-                    <div class="text-center py-8 text-gray-500">
-                        <svg
-                            class="mx-auto h-12 w-12 text-gray-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                            ></path>
-                        </svg>
-                        <p class="mt-2 text-sm">Prochainement disponible</p>
-                    </div>
-                </div>
-            </div>
+            <!-- Widget Alertes de Stock -->
+            <StockAlertsWidget
+                :low-stock-products="productData?.low_stock_products || []"
+                :out-of-stock-products="
+                    productData?.out_of_stock_products || []
+                "
+                :is-loading="isLoadingProducts"
+            />
         </div>
 
         <!-- Messages d'erreur -->
@@ -532,6 +627,7 @@ import SalesChart from "./SalesChart.vue";
 import DateFilter from "../../Components/DateFilter.vue";
 import EnhancedKPICard from "../../Components/Reports/EnhancedKPICard.vue";
 import TopClientsWidget from "../../Components/Reports/TopClientsWidget.vue";
+import StockAlertsWidget from "../../Components/Reports/StockAlertsWidget.vue";
 import { formatPrice } from "../../utils/currency.js";
 
 // État réactif
@@ -690,6 +786,29 @@ const refreshAllData = async () => {
         loadTopClientsAnalysis(),
     ]);
     isLoading.value = false;
+};
+
+// Méthodes pour les classes de rang
+const getTopSellingRankClass = (index) => {
+    const classes = [
+        "bg-blue-100 text-blue-800 border-2 border-blue-300", // 1er
+        "bg-indigo-100 text-indigo-800 border-2 border-indigo-300", // 2ème
+        "bg-purple-100 text-purple-800 border-2 border-purple-300", // 3ème
+        "bg-blue-100 text-blue-800", // 4ème
+        "bg-gray-100 text-gray-800", // 5ème
+    ];
+    return classes[index] || "bg-gray-100 text-gray-800";
+};
+
+const getTopProfitableRankClass = (index) => {
+    const classes = [
+        "bg-green-100 text-green-800 border-2 border-green-300", // 1er
+        "bg-emerald-100 text-emerald-800 border-2 border-emerald-300", // 2ème
+        "bg-teal-100 text-teal-800 border-2 border-teal-300", // 3ème
+        "bg-green-100 text-green-800", // 4ème
+        "bg-gray-100 text-gray-800", // 5ème
+    ];
+    return classes[index] || "bg-gray-100 text-gray-800";
 };
 
 // La fonction formatPrice est maintenant importée depuis utils/currency.js

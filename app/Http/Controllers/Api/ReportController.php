@@ -227,16 +227,21 @@ class ReportController extends Controller
                 ], 403);
             }
 
+            // Statuts de ventes confirmées
+            $confirmedStatuses = ['en_commande', 'pret_pour_livraison', 'livre'];
+
             // Top 5 produits les plus vendus (par quantité)
             $topSellingProducts = Product::where('products.tenant_id', $user->tenant_id)
                 ->select('products.*')
                 ->selectRaw('SUM(sale_items.quantity) as total_sold')
                 ->selectRaw('SUM(sale_items.quantity * sale_items.price) as total_revenue')
+                ->selectRaw('AVG(sale_items.price) as average_price')
                 ->join('sale_items', 'products.id', '=', 'sale_items.product_id')
                 ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
                 ->where('sales.tenant_id', $user->tenant_id)
+                ->whereIn('sales.status', $confirmedStatuses)
                 ->with('productCategory')
-                ->groupBy('products.id')
+                ->groupBy('products.id', 'products.name', 'products.price', 'products.purchase_price', 'products.stock_quantity', 'products.product_category_id', 'products.tenant_id', 'products.created_at', 'products.updated_at')
                 ->orderByDesc('total_sold')
                 ->limit(5)
                 ->get();
@@ -247,13 +252,35 @@ class ReportController extends Controller
                 ->selectRaw('SUM(sale_items.quantity) as total_sold')
                 ->selectRaw('SUM(sale_items.quantity * (sale_items.price - COALESCE(products.purchase_price, 0))) as total_profit')
                 ->selectRaw('SUM(sale_items.quantity * sale_items.price) as total_revenue')
+                ->selectRaw('AVG(sale_items.price - COALESCE(products.purchase_price, 0)) as average_profit_per_unit')
                 ->join('sale_items', 'products.id', '=', 'sale_items.product_id')
                 ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
                 ->where('sales.tenant_id', $user->tenant_id)
+                ->whereIn('sales.status', $confirmedStatuses)
                 ->whereNotNull('products.purchase_price')
+                ->where('products.purchase_price', '>', 0)
                 ->with('productCategory')
-                ->groupBy('products.id')
+                ->groupBy('products.id', 'products.name', 'products.price', 'products.purchase_price', 'products.stock_quantity', 'products.product_category_id', 'products.tenant_id', 'products.created_at', 'products.updated_at')
                 ->orderByDesc('total_profit')
+                ->limit(5)
+                ->get();
+
+            // Calcul des statistiques globales
+            $totalProductsSold = $topSellingProducts->sum('total_sold');
+            $totalRevenueFromTopProducts = $topSellingProducts->sum('total_revenue');
+            $totalProfitFromTopProducts = $topProfitableProducts->sum('total_profit');
+
+            // Produits avec alertes de stock faible
+            $lowStockProducts = Product::where('tenant_id', $user->tenant_id)
+                ->where('stock_quantity', '<=', 5)
+                ->where('stock_quantity', '>', 0)
+                ->orderBy('stock_quantity', 'asc')
+                ->limit(5)
+                ->get();
+
+            // Produits sans stock
+            $outOfStockProducts = Product::where('tenant_id', $user->tenant_id)
+                ->where('stock_quantity', '<=', 0)
                 ->limit(5)
                 ->get();
 
@@ -262,6 +289,15 @@ class ReportController extends Controller
                 'data' => [
                     'top_selling' => $topSellingProducts,
                     'top_profitable' => $topProfitableProducts,
+                    'low_stock_products' => $lowStockProducts,
+                    'out_of_stock_products' => $outOfStockProducts,
+                    'summary' => [
+                        'total_products_sold' => $totalProductsSold,
+                        'total_revenue_top_selling' => $totalRevenueFromTopProducts,
+                        'total_profit_top_profitable' => $totalProfitFromTopProducts,
+                        'low_stock_count' => $lowStockProducts->count(),
+                        'out_of_stock_count' => $outOfStockProducts->count(),
+                    ]
                 ]
             ], 200);
 
