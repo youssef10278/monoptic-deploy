@@ -228,18 +228,6 @@
                                 >
                                     <a
                                         href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    >
-                                        Profil
-                                    </a>
-                                    <a
-                                        href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    >
-                                        Paramètres
-                                    </a>
-                                    <a
-                                        href="#"
                                         @click.prevent="openChangePasswordModal"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     >
@@ -275,6 +263,166 @@
         >
             <div class="absolute inset-0 bg-gray-600 opacity-75"></div>
         </div>
+
+        <!-- Modal de changement de mot de passe -->
+        <div
+            v-if="showChangePasswordModal"
+            class="fixed inset-0 z-50 overflow-y-auto"
+            aria-labelledby="modal-title"
+            role="dialog"
+            aria-modal="true"
+        >
+            <div
+                class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+            >
+                <!-- Background overlay -->
+                <div
+                    class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                    @click="closeChangePasswordModal"
+                ></div>
+
+                <!-- Modal panel -->
+                <div
+                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                >
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div
+                                class="mt-3 text-center sm:mt-0 sm:text-left w-full"
+                            >
+                                <h3
+                                    class="text-lg leading-6 font-medium text-gray-900 mb-4"
+                                    id="modal-title"
+                                >
+                                    Changer le mot de passe
+                                </h3>
+
+                                <!-- Formulaire de changement de mot de passe -->
+                                <form
+                                    @submit.prevent="changePassword"
+                                    class="space-y-4"
+                                >
+                                    <div>
+                                        <label
+                                            for="current_password"
+                                            class="block text-sm font-medium text-gray-700"
+                                        >
+                                            Mot de passe actuel
+                                        </label>
+                                        <input
+                                            type="password"
+                                            id="current_password"
+                                            v-model="
+                                                passwordForm.current_password
+                                            "
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                            required
+                                        />
+                                        <p
+                                            v-if="
+                                                passwordForm.errors
+                                                    .current_password
+                                            "
+                                            class="mt-1 text-sm text-red-600"
+                                        >
+                                            {{
+                                                passwordForm.errors
+                                                    .current_password
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            for="new_password"
+                                            class="block text-sm font-medium text-gray-700"
+                                        >
+                                            Nouveau mot de passe
+                                        </label>
+                                        <input
+                                            type="password"
+                                            id="new_password"
+                                            v-model="passwordForm.password"
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                            required
+                                        />
+                                        <p
+                                            v-if="passwordForm.errors.password"
+                                            class="mt-1 text-sm text-red-600"
+                                        >
+                                            {{ passwordForm.errors.password }}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            for="password_confirmation"
+                                            class="block text-sm font-medium text-gray-700"
+                                        >
+                                            Confirmer le nouveau mot de passe
+                                        </label>
+                                        <input
+                                            type="password"
+                                            id="password_confirmation"
+                                            v-model="
+                                                passwordForm.password_confirmation
+                                            "
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                            required
+                                        />
+                                        <p
+                                            v-if="
+                                                passwordForm.errors
+                                                    .password_confirmation
+                                            "
+                                            class="mt-1 text-sm text-red-600"
+                                        >
+                                            {{
+                                                passwordForm.errors
+                                                    .password_confirmation
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Message de succès/erreur -->
+                                    <div
+                                        v-if="passwordMessage"
+                                        class="p-3 rounded-md"
+                                        :class="passwordMessageClass"
+                                    >
+                                        {{ passwordMessage }}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action -->
+                    <div
+                        class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
+                    >
+                        <button
+                            type="submit"
+                            @click="changePassword"
+                            :disabled="passwordForm.processing"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50"
+                        >
+                            <span v-if="passwordForm.processing"
+                                >Changement...</span
+                            >
+                            <span v-else>Changer le mot de passe</span>
+                        </button>
+                        <button
+                            type="button"
+                            @click="closeChangePasswordModal"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        >
+                            Annuler
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -290,6 +438,15 @@ const sidebarOpen = ref(false);
 const userMenuOpen = ref(false);
 const user = ref(null);
 const stats = ref(null);
+const showChangePasswordModal = ref(false);
+const passwordMessage = ref("");
+const passwordForm = ref({
+    current_password: "",
+    password: "",
+    password_confirmation: "",
+    processing: false,
+    errors: {},
+});
 
 // Computed properties
 const userInitials = computed(() => {
@@ -301,6 +458,18 @@ const userInitials = computed(() => {
         .toUpperCase()
         .slice(0, 2);
 });
+
+const passwordMessageClass = computed(() => ({
+    "bg-green-100 text-green-800 border border-green-200":
+        passwordMessage.value.includes("succès"),
+    "bg-red-100 text-red-800 border border-red-200":
+        passwordMessage.value.includes("erreur") ||
+        passwordMessage.value.includes("Erreur"),
+    "bg-blue-100 text-blue-800 border border-blue-200":
+        !passwordMessage.value.includes("succès") &&
+        !passwordMessage.value.includes("erreur") &&
+        !passwordMessage.value.includes("Erreur"),
+}));
 
 // Fonctions
 const toggleSidebar = () => {
@@ -363,6 +532,96 @@ const handleLogout = async () => {
         localStorage.removeItem("auth_token");
         localStorage.removeItem("user_data");
         router.push("/login");
+    }
+};
+
+// Fonctions pour le modal de changement de mot de passe
+const openChangePasswordModal = () => {
+    showChangePasswordModal.value = true;
+    userMenuOpen.value = false;
+    // Réinitialiser le formulaire
+    passwordForm.value = {
+        current_password: "",
+        password: "",
+        password_confirmation: "",
+        processing: false,
+        errors: {},
+    };
+    passwordMessage.value = "";
+};
+
+const closeChangePasswordModal = () => {
+    showChangePasswordModal.value = false;
+    passwordForm.value = {
+        current_password: "",
+        password: "",
+        password_confirmation: "",
+        processing: false,
+        errors: {},
+    };
+    passwordMessage.value = "";
+};
+
+const changePassword = async () => {
+    if (passwordForm.value.processing) return;
+
+    // Validation côté client
+    passwordForm.value.errors = {};
+
+    if (!passwordForm.value.current_password) {
+        passwordForm.value.errors.current_password =
+            "Le mot de passe actuel est requis";
+        return;
+    }
+
+    if (!passwordForm.value.password) {
+        passwordForm.value.errors.password =
+            "Le nouveau mot de passe est requis";
+        return;
+    }
+
+    if (passwordForm.value.password.length < 8) {
+        passwordForm.value.errors.password =
+            "Le mot de passe doit contenir au moins 8 caractères";
+        return;
+    }
+
+    if (
+        passwordForm.value.password !== passwordForm.value.password_confirmation
+    ) {
+        passwordForm.value.errors.password_confirmation =
+            "Les mots de passe ne correspondent pas";
+        return;
+    }
+
+    passwordForm.value.processing = true;
+    passwordMessage.value = "";
+
+    try {
+        const response = await axios.put("/api/user/password", {
+            current_password: passwordForm.value.current_password,
+            password: passwordForm.value.password,
+            password_confirmation: passwordForm.value.password_confirmation,
+        });
+
+        passwordMessage.value = "Mot de passe changé avec succès !";
+
+        // Fermer le modal après 2 secondes
+        setTimeout(() => {
+            closeChangePasswordModal();
+        }, 2000);
+    } catch (error) {
+        console.error("Erreur changement mot de passe:", error);
+
+        if (error.response?.data?.errors) {
+            passwordForm.value.errors = error.response.data.errors;
+        } else if (error.response?.data?.message) {
+            passwordMessage.value = "Erreur: " + error.response.data.message;
+        } else {
+            passwordMessage.value = "Erreur lors du changement de mot de passe";
+        }
+    } finally {
+        passwordForm.value.processing = false;
     }
 };
 
