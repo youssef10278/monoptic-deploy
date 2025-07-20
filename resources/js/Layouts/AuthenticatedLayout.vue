@@ -10,7 +10,7 @@
             "
         >
             <div class="flex items-center justify-center h-16 bg-blue-600">
-                <h1 class="text-white text-xl font-bold">Monoptic</h1>
+                <h1 class="text-white text-xl font-bold">Monopti</h1>
             </div>
 
             <nav class="mt-8">
