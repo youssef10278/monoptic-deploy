@@ -1,0 +1,102 @@
+<svg width="640" height="1136" viewBox="0 0 640 1136" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradMobile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="headerGradMobile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="640" height="1136" fill="url(#bgGradMobile)"/>
+  
+  <!-- Header -->
+  <rect width="640" height="100" fill="url(#headerGradMobile)"/>
+  
+  <!-- Logo -->
+  <circle cx="50" cy="50" r="16" fill="white" opacity="0.9"/>
+  <rect x="38" y="54" width="24" height="8" rx="2" fill="url(#headerGradMobile)" opacity="0.8"/>
+  
+  <!-- Title -->
+  <text x="80" y="58" fill="white" font-family="Arial, sans-serif" font-size="20" font-weight="bold">Monoptic</text>
+  
+  <!-- Menu Button -->
+  <rect x="580" y="35" width="30" height="30" rx="4" fill="rgba(255,255,255,0.2)"/>
+  <rect x="588" y="42" width="14" height="2" fill="white"/>
+  <rect x="588" y="48" width="14" height="2" fill="white"/>
+  <rect x="588" y="54" width="14" height="2" fill="white"/>
+  
+  <!-- Main Content -->
+  <rect x="20" y="130" width="600" height="980" rx="10" fill="white"/>
+  
+  <!-- Dashboard Cards - Mobile Layout -->
+  <rect x="40" y="160" width="560" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="320" y="185" fill="#1f2937" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle">Ventes du Jour</text>
+  <text x="320" y="215" fill="#3B82F6" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle">€2,450</text>
+  <text x="320" y="240" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">+12% vs hier</text>
+  
+  <rect x="40" y="280" width="270" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="175" y="305" fill="#1f2937" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Commandes</text>
+  <text x="175" y="330" fill="#10b981" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle">24</text>
+  <text x="175" y="355" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">En cours</text>
+  
+  <rect x="330" y="280" width="270" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="465" y="305" fill="#1f2937" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Stock Critique</text>
+  <text x="465" y="330" fill="#ef4444" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle">8</text>
+  <text x="465" y="355" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">Produits</text>
+  
+  <!-- Quick Actions -->
+  <text x="60" y="420" fill="#1f2937" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Actions Rapides</text>
+  
+  <rect x="40" y="440" width="130" height="80" rx="8" fill="#3B82F6" opacity="0.1"/>
+  <circle cx="105" cy="465" r="12" fill="#3B82F6"/>
+  <text x="105" y="470" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle">+</text>
+  <text x="105" y="495" fill="#3B82F6" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Nouvelle</text>
+  <text x="105" y="510" fill="#3B82F6" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Vente</text>
+  
+  <rect x="190" y="440" width="130" height="80" rx="8" fill="#10b981" opacity="0.1"/>
+  <circle cx="255" cy="465" r="12" fill="#10b981"/>
+  <text x="255" y="470" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">📦</text>
+  <text x="255" y="495" fill="#10b981" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Gérer</text>
+  <text x="255" y="510" fill="#10b981" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Stock</text>
+  
+  <rect x="340" y="440" width="130" height="80" rx="8" fill="#f59e0b" opacity="0.1"/>
+  <circle cx="405" cy="465" r="12" fill="#f59e0b"/>
+  <text x="405" y="470" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">📊</text>
+  <text x="405" y="495" fill="#f59e0b" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Voir</text>
+  <text x="405" y="510" fill="#f59e0b" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Rapports</text>
+  
+  <rect x="490" y="440" width="130" height="80" rx="8" fill="#8b5cf6" opacity="0.1"/>
+  <circle cx="555" cy="465" r="12" fill="#8b5cf6"/>
+  <text x="555" y="470" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">👥</text>
+  <text x="555" y="495" fill="#8b5cf6" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Clients</text>
+  
+  <!-- Recent Activity -->
+  <text x="60" y="570" fill="#1f2937" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Activité Récente</text>
+  
+  <rect x="40" y="590" width="560" height="500" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <!-- Activity Items -->
+  <circle cx="70" cy="620" r="4" fill="#10b981"/>
+  <text x="90" y="625" fill="#1f2937" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Nouvelle commande</text>
+  <text x="90" y="645" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">Client Martin - Montures + Verres</text>
+  <text x="550" y="625" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" text-anchor="end">Il y a 5 min</text>
+  
+  <circle cx="70" cy="680" r="4" fill="#3B82F6"/>
+  <text x="90" y="685" fill="#1f2937" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Stock mis à jour</text>
+  <text x="90" y="705" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">Montures Ray-Ban RB3025</text>
+  <text x="550" y="685" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" text-anchor="end">Il y a 15 min</text>
+  
+  <circle cx="70" cy="740" r="4" fill="#f59e0b"/>
+  <text x="90" y="745" fill="#1f2937" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Alerte stock</text>
+  <text x="90" y="765" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">Verres progressifs - Stock faible</text>
+  <text x="550" y="745" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" text-anchor="end">Il y a 1h</text>
+  
+  <circle cx="70" cy="800" r="4" fill="#ef4444"/>
+  <text x="90" y="805" fill="#1f2937" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Commande urgente</text>
+  <text x="90" y="825" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">Client Dubois - Livraison express</text>
+  <text x="550" y="805" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" text-anchor="end">Il y a 2h</text>
+</svg>
