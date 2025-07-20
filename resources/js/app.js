@@ -7,27 +7,17 @@ import axios from 'axios';
 import App from './App.vue';
 
 // PWA Service Worker
-import { registerSW } from 'virtual:pwa-register';
-
-// Enregistrer le service worker
-const updateSW = registerSW({
-    onNeedRefresh() {
-        // Afficher une notification pour recharger l'app
-        if (confirm('Une nouvelle version est disponible. Voulez-vous recharger ?')) {
-            updateSW(true);
-        }
-    },
-    onOfflineReady() {
-        console.log('Application prête pour une utilisation hors ligne');
-        // Optionnel : afficher une notification
-        if ('Notification' in window && Notification.permission === 'granted') {
-            new Notification('Monoptic', {
-                body: 'Application prête pour une utilisation hors ligne',
-                icon: '/pwa-192x192.png'
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+                console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
             });
-        }
-    },
-});
+    });
+}
 
 // Configuration d'Axios
 axios.defaults.baseURL = window.location.origin;

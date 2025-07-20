@@ -14,6 +14,9 @@
         <meta name="apple-mobile-web-app-title" content="Monoptic">
         <meta name="description" content="Application de gestion pour magasins d'optique">
 
+        <!-- PWA Manifest -->
+        <link rel="manifest" href="/manifest.json">
+
         <!-- PWA Icons -->
         <link rel="icon" type="image/svg+xml" href="/favicon.svg">
         <link rel="apple-touch-icon" href="/pwa-192x192.png">
