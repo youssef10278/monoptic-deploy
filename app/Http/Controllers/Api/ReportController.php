@@ -240,9 +240,9 @@ class ReportController extends Controller
                 ->select([
                     'products.id',
                     'products.name',
-                    'products.price',
+                    'products.selling_price',
                     'products.purchase_price',
-                    'products.stock_quantity',
+                    'products.quantity',
                     'products.product_category_id',
                     'products.tenant_id',
                     'products.created_at',
@@ -259,9 +259,9 @@ class ReportController extends Controller
                 ->groupBy([
                     'products.id',
                     'products.name',
-                    'products.price',
+                    'products.selling_price',
                     'products.purchase_price',
-                    'products.stock_quantity',
+                    'products.quantity',
                     'products.product_category_id',
                     'products.tenant_id',
                     'products.created_at',
@@ -276,9 +276,9 @@ class ReportController extends Controller
                 ->select([
                     'products.id',
                     'products.name',
-                    'products.price',
+                    'products.selling_price',
                     'products.purchase_price',
-                    'products.stock_quantity',
+                    'products.quantity',
                     'products.product_category_id',
                     'products.tenant_id',
                     'products.created_at',
@@ -298,9 +298,9 @@ class ReportController extends Controller
                 ->groupBy([
                     'products.id',
                     'products.name',
-                    'products.price',
+                    'products.selling_price',
                     'products.purchase_price',
-                    'products.stock_quantity',
+                    'products.quantity',
                     'products.product_category_id',
                     'products.tenant_id',
                     'products.created_at',
@@ -317,16 +317,16 @@ class ReportController extends Controller
 
             // Produits avec alertes de stock faible
             $lowStockProducts = Product::where('tenant_id', $user->tenant_id)
-                ->where('stock_quantity', '<=', 5)
-                ->where('stock_quantity', '>', 0)
+                ->where('quantity', '<=', 5)
+                ->where('quantity', '>', 0)
                 ->with('productCategory')
-                ->orderBy('stock_quantity', 'asc')
+                ->orderBy('quantity', 'asc')
                 ->limit(5)
                 ->get();
 
             // Produits sans stock
             $outOfStockProducts = Product::where('tenant_id', $user->tenant_id)
-                ->where('stock_quantity', '<=', 0)
+                ->where('quantity', '<=', 0)
                 ->with('productCategory')
                 ->limit(5)
                 ->get();
@@ -376,12 +376,12 @@ class ReportController extends Controller
             // Calculer la valeur du stock au prix d'achat
             $purchaseValue = Product::where('tenant_id', $user->tenant_id)
                 ->whereNotNull('purchase_price')
-                ->selectRaw('SUM(stock_quantity * purchase_price) as total')
+                ->selectRaw('SUM(quantity * purchase_price) as total')
                 ->value('total') ?? 0;
 
             // Calculer la valeur du stock au prix de vente
             $sellingValue = Product::where('tenant_id', $user->tenant_id)
-                ->selectRaw('SUM(stock_quantity * price) as total')
+                ->selectRaw('SUM(quantity * selling_price) as total')
                 ->value('total') ?? 0;
 
             // Calculer la marge potentielle
@@ -389,9 +389,9 @@ class ReportController extends Controller
 
             // Statistiques supplémentaires
             $totalProducts = Product::where('tenant_id', $user->tenant_id)->count();
-            $totalQuantity = Product::where('tenant_id', $user->tenant_id)->sum('stock_quantity');
+            $totalQuantity = Product::where('tenant_id', $user->tenant_id)->sum('quantity');
             $lowStockProducts = Product::where('tenant_id', $user->tenant_id)
-                ->where('stock_quantity', '<=', 5)
+                ->where('quantity', '<=', 5)
                 ->count();
 
             return response()->json([

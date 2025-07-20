@@ -382,7 +382,7 @@
                                             {{ product.name }}
                                         </p>
                                         <span
-                                            v-if="product.stock_quantity <= 5"
+                                            v-if="product.quantity <= 5"
                                             class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
                                         >
                                             Stock faible
@@ -398,7 +398,7 @@
                                             }}
                                         </p>
                                         <p class="text-xs text-gray-500">
-                                            Stock: {{ product.stock_quantity }}
+                                            Stock: {{ product.quantity }}
                                         </p>
                                     </div>
                                 </div>
@@ -513,7 +513,7 @@
                                             {{ product.name }}
                                         </p>
                                         <span
-                                            v-if="product.stock_quantity <= 5"
+                                            v-if="product.quantity <= 5"
                                             class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
                                         >
                                             Stock faible
