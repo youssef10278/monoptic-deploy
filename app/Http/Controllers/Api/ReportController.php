@@ -217,6 +217,53 @@ class ReportController extends Controller
     }
 
     /**
+     * Test simple pour diagnostiquer les erreurs
+     */
+    public function testProductAnalysis(): JsonResponse
+    {
+        try {
+            $user = auth()->user();
+
+            // Vérifier que l'utilisateur appartient à un tenant
+            if (!$user->tenant_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Utilisateur non associé à un magasin'
+                ], 403);
+            }
+
+            // Test simple : compter les produits
+            $productCount = Product::where('tenant_id', $user->tenant_id)->count();
+
+            // Test simple : compter les ventes
+            $salesCount = Sale::where('tenant_id', $user->tenant_id)->count();
+
+            // Test simple : compter les sale_items
+            $saleItemsCount = SaleItem::join('sales', 'sale_items.sale_id', '=', 'sales.id')
+                ->where('sales.tenant_id', $user->tenant_id)
+                ->count();
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'user_tenant_id' => $user->tenant_id,
+                    'product_count' => $productCount,
+                    'sales_count' => $salesCount,
+                    'sale_items_count' => $saleItemsCount,
+                ]
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors du test',
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ], 500);
+        }
+    }
+
+    /**
      * Analyse des produits : top ventes et top rentabilité
      */
     public function productAnalysis(): JsonResponse
@@ -235,80 +282,47 @@ class ReportController extends Controller
             // Statuts de ventes confirmées
             $confirmedStatuses = ['en_commande', 'pret_pour_livraison', 'livre'];
 
-            // Top 5 produits les plus vendus (par quantité)
-            $topSellingProducts = Product::where('products.tenant_id', $user->tenant_id)
-                ->select([
-                    'products.id',
-                    'products.name',
-                    'products.selling_price',
-                    'products.purchase_price',
-                    'products.quantity',
-                    'products.product_category_id',
-                    'products.tenant_id',
-                    'products.created_at',
-                    'products.updated_at'
-                ])
-                ->selectRaw('SUM(sale_items.quantity) as total_sold')
-                ->selectRaw('SUM(sale_items.quantity * sale_items.price) as total_revenue')
-                ->selectRaw('AVG(sale_items.price) as average_price')
-                ->join('sale_items', 'products.id', '=', 'sale_items.product_id')
-                ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
-                ->where('sales.tenant_id', $user->tenant_id)
-                ->whereIn('sales.status', $confirmedStatuses)
-                ->with('productCategory')
-                ->groupBy([
-                    'products.id',
-                    'products.name',
-                    'products.selling_price',
-                    'products.purchase_price',
-                    'products.quantity',
-                    'products.product_category_id',
-                    'products.tenant_id',
-                    'products.created_at',
-                    'products.updated_at'
-                ])
-                ->orderByDesc('total_sold')
-                ->limit(5)
-                ->get();
+            // Version simplifiée pour tester
+            $topSellingProducts = collect([]);
 
-            // Top 5 produits les plus rentables (par marge)
-            $topProfitableProducts = Product::where('products.tenant_id', $user->tenant_id)
-                ->select([
-                    'products.id',
-                    'products.name',
-                    'products.selling_price',
-                    'products.purchase_price',
-                    'products.quantity',
-                    'products.product_category_id',
-                    'products.tenant_id',
-                    'products.created_at',
-                    'products.updated_at'
-                ])
-                ->selectRaw('SUM(sale_items.quantity) as total_sold')
-                ->selectRaw('SUM(sale_items.quantity * (sale_items.price - COALESCE(products.purchase_price, 0))) as total_profit')
-                ->selectRaw('SUM(sale_items.quantity * sale_items.price) as total_revenue')
-                ->selectRaw('AVG(sale_items.price - COALESCE(products.purchase_price, 0)) as average_profit_per_unit')
-                ->join('sale_items', 'products.id', '=', 'sale_items.product_id')
-                ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
-                ->where('sales.tenant_id', $user->tenant_id)
-                ->whereIn('sales.status', $confirmedStatuses)
-                ->whereNotNull('products.purchase_price')
-                ->where('products.purchase_price', '>', 0)
-                ->with('productCategory')
-                ->groupBy([
-                    'products.id',
-                    'products.name',
-                    'products.selling_price',
-                    'products.purchase_price',
-                    'products.quantity',
-                    'products.product_category_id',
-                    'products.tenant_id',
-                    'products.created_at',
-                    'products.updated_at'
-                ])
-                ->orderByDesc('total_profit')
-                ->limit(5)
-                ->get();
+            // Test étape par étape
+            try {
+                // Étape 1: Vérifier s'il y a des produits
+                $hasProducts = Product::where('tenant_id', $user->tenant_id)->exists();
+                if (!$hasProducts) {
+                    throw new \Exception("Aucun produit trouvé pour ce tenant");
+                }
+
+                // Étape 2: Vérifier s'il y a des ventes
+                $hasSales = Sale::where('tenant_id', $user->tenant_id)->exists();
+                if (!$hasSales) {
+                    throw new \Exception("Aucune vente trouvée pour ce tenant");
+                }
+
+                // Étape 3: Vérifier s'il y a des sale_items
+                $hasSaleItems = SaleItem::join('sales', 'sale_items.sale_id', '=', 'sales.id')
+                    ->where('sales.tenant_id', $user->tenant_id)
+                    ->exists();
+                if (!$hasSaleItems) {
+                    throw new \Exception("Aucun sale_item trouvé pour ce tenant");
+                }
+
+                // Étape 4: Requête simple sans GROUP BY
+                $topSellingProducts = Product::where('products.tenant_id', $user->tenant_id)
+                    ->join('sale_items', 'products.id', '=', 'sale_items.product_id')
+                    ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+                    ->where('sales.tenant_id', $user->tenant_id)
+                    ->whereIn('sales.status', $confirmedStatuses)
+                    ->select('products.*')
+                    ->limit(5)
+                    ->get();
+
+            } catch (\Exception $e) {
+                throw new \Exception("Erreur dans topSellingProducts: " . $e->getMessage());
+            }
+
+            // Version simplifiée pour les produits rentables
+            $topProfitableProducts = collect([]);
 
             // Calcul des statistiques globales
             $totalProductsSold = $topSellingProducts->sum('total_sold');

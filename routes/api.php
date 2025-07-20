@@ -221,6 +221,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Routes pour les rapports et analyses (pour AdminMagasin et Employe)
     Route::get('reports/sales', [ReportController::class, 'salesReport']);
     Route::get('reports/product-analysis', [ReportController::class, 'productAnalysis']);
+    Route::get('reports/test-product-analysis', [ReportController::class, 'testProductAnalysis']);
     Route::get('reports/stock-value', [ReportController::class, 'stockValue']);
     Route::get('reports/top-clients', [ReportController::class, 'topClientsAnalysis']);
 
