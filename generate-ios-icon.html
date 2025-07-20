@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Générateur d'icône iOS - Monoptic</title>
+</head>
+<body>
+    <h1>Générateur d'icône Apple Touch</h1>
+    <canvas id="canvas" width="180" height="180" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <br>
+    <button onclick="downloadIcon()">Télécharger apple-touch-icon.png</button>
+
+    <script>
+        function createIOSIcon() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const size = 180;
+            
+            // Créer le gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#3B82F6');
+            gradient.addColorStop(1, '#1E40AF');
+            
+            // Fond avec coins arrondis iOS (rayon ~22% pour iOS)
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.22);
+            ctx.fill();
+            
+            // Cercle (lunettes) - plus grand pour iOS
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.beginPath();
+            ctx.arc(size * 0.5, size * 0.38, size * 0.15, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Rectangle (monture) - plus épais pour iOS
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.beginPath();
+            ctx.roundRect(size * 0.3, size * 0.46, size * 0.4, size * 0.15, size * 0.03);
+            ctx.fill();
+            
+            // Lettre M - plus grande pour iOS
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.12}px -apple-system, BlinkMacSystemFont, Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('M', size * 0.5, size * 0.82);
+            
+            // Effet de brillance iOS (optionnel)
+            const shineGradient = ctx.createLinearGradient(0, 0, 0, size * 0.5);
+            shineGradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+            shineGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            
+            ctx.fillStyle = shineGradient;
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size * 0.5, size * 0.22);
+            ctx.fill();
+        }
+
+        // Polyfill pour roundRect si nécessaire
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.beginPath();
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+                this.closePath();
+            };
+        }
+
+        // Créer l'icône
+        createIOSIcon();
+
+        function downloadIcon() {
+            const canvas = document.getElementById('canvas');
+            const link = document.createElement('a');
+            link.download = 'apple-touch-icon.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>

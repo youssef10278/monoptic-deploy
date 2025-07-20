@@ -41,6 +41,7 @@
                         Monture
                     </button>
 
+                    
                     <!-- Bouton Ajouter un accessoire -->
                     <button
                         @click="openAddAccessoryModal"

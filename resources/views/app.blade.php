@@ -19,8 +19,14 @@
 
         <!-- PWA Icons -->
         <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-        <link rel="apple-touch-icon" href="/pwa-192x192.png">
-        <link rel="mask-icon" href="/pwa-192x192.png" color="#3B82F6">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="mask-icon" href="/favicon.svg" color="#3B82F6">
+
+        <!-- iOS Specific Meta Tags -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="Monoptic">
+        <meta name="format-detection" content="telephone=no">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
